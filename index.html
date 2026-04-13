@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2 打法基因测试 — 你是哪位职业选手？</title>
+  <style>
+    /* ══ Reset & Base ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:  #ff5c1a;
+      --orange2: #ff7a3c;
+      --dark:    #111318;
+      --dark2:   #1a1d24;
+      --card:    #ffffff;
+      --border:  #e8eaed;
+      --text:    #1a1a2e;
+      --sub:     #6b7280;
+      --bg:      #f7f8fc;
+      --radius:  14px;
+      --shadow:  0 2px 20px rgba(0,0,0,.07);
+      --shadow2: 0 8px 40px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ══ Layout ══ */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 60px;
+    }
+
+    /* ══ NAV ══ */
+    .nav {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      align-items: center;
+      padding: 20px 0;
+      gap: 10px;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--orange);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 2px;
+    }
+
+    /* ══ LANDING PAGE ══ */
+    .landing-hero {
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+      padding: 48px 0 36px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+      background: rgba(255,92,26,.08);
+      border: 1px solid rgba(255,92,26,.2);
+      border-radius: 20px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow::before { content: '●'; font-size: 8px; }
+    .hero-title {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .hero-title .hl { color: var(--orange); }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--sub);
+      line-height: 1.6;
+      max-width: 440px;
+      margin: 0 auto 32px;
+    }
+
+    /* 统计数字 */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--orange); }
+    .stat-label { font-size: 12px; color: var(--sub); margin-top: 4px; }
+
+    /* 选手滚动条 */
+    .player-strip-wrap {
+      width: 100%;
+      max-width: 720px;
+      overflow: hidden;
+      margin-bottom: 36px;
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .player-strip {
+      display: flex;
+      gap: 10px;
+      animation: stripScroll 22s linear infinite;
+      width: max-content;
+    }
+    .player-strip:hover { animation-play-state: paused; }
+    @keyframes stripScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .player-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      box-shadow: var(--shadow);
+    }
+    .chip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* 维度预览 */
+    .dim-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+    .dim-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform .2s;
+    }
+    .dim-card:hover { transform: translateY(-2px); }
+    .dim-icon { font-size: 22px; margin-bottom: 6px; }
+    .dim-name { font-size: 12px; font-weight: 600; color: var(--sub); }
+
+    /* CTA 按钮 */
+    .btn-start {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,92,26,.35);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-start:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(255,92,26,.45);
+    }
+    .btn-start:active { transform: scale(.98); }
+    .btn-arrow { font-size: 20px; transition: transform .2s; }
+    .btn-start:hover .btn-arrow { transform: translateX(4px); }
+
+    .landing-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--sub);
+    }
+
+    /* ══ QUIZ PAGE ══ */
+    .quiz-wrap {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 16px;
+    }
+    .dim-label-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      background: rgba(255,92,26,.08);
+      border: 1px solid rgba(255,92,26,.15);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .progress-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sub);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--orange);
+      border-radius: 2px;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* 题卡 */
+    .question-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: var(--shadow2);
+      animation: cardIn .3s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-dim-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sub);
+      margin-bottom: 12px;
+      letter-spacing: .3px;
+    }
+    .q-text {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .15s, background .15s, transform .1s;
+      line-height: 1.5;
+    }
+    .option-btn:hover:not(.locked) {
+      border-color: var(--orange);
+      background: rgba(255,92,26,.04);
+      transform: translateX(3px);
+    }
+    .option-btn.selected {
+      border-color: var(--orange);
+      background: rgba(255,92,26,.06);
+      color: var(--text);
+    }
+    .option-btn.selected .option-letter {
+      background: var(--orange);
+      color: white;
+    }
+    .option-btn.locked { cursor: default; }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sub);
+      transition: background .15s, color .15s;
+      margin-top: 1px;
+    }
+
+    /* 导航按钮 */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 12px;
+    }
+    .btn-nav {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text);
+      transition: all .15s;
+    }
+    .btn-nav:hover:not(:disabled) {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+    .btn-nav:disabled { opacity: .35; cursor: not-allowed; }
+    .btn-nav.primary {
+      background: var(--orange);
+      color: white;
+      border-color: var(--orange);
+      flex: 1;
+      max-width: 220px;
+    }
+    .btn-nav.primary:hover:not(:disabled) {
+      background: var(--orange2);
+      border-color: var(--orange2);
+      color: white;
+    }
+
+    /* ══ RESULT PAGE ══ */
+    .result-wrap {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .result-header { padding: 20px 0 28px; text-align: center; }
+    .result-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sub);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    /* 选手卡 */
+    .player-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: var(--shadow2);
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    /* 环形进度 */
+    .ring-wrap {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .ring-svg { transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: #f0f0f0; stroke-width: 8; }
+    .ring-fill {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1), stroke .3s;
+    }
+    .ring-label {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ring-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+    }
+    .ring-pct {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+    .ring-match-label { font-size: 10px; color: var(--sub); font-weight: 600; }
+
+    .player-info { flex: 1; min-width: 0; }
+    .player-ign {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -.5px;
+      margin-bottom: 6px;
+    }
+    .player-tagline {
+      font-size: 14px;
+      color: var(--sub);
+      font-style: italic;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .meta-chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--sub);
+    }
+    .meta-chip.role {
+      background: rgba(255,92,26,.08);
+      border-color: rgba(255,92,26,.25);
+      color: var(--orange);
+    }
+
+    .player-desc {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.75;
+      padding: 16px;
+      background: var(--bg);
+      border-radius: 10px;
+      border-left: 3px solid var(--orange);
+    }
+
+    /* 雷达图卡 */
+    .radar-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .radar-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .radar-body {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    #radarCanvas {
+      flex-shrink: 0;
+      width: 240px;
+      height: 240px;
+    }
+    .radar-legend {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 8px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sub);
+      min-width: 80px;
+    }
+    .legend-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: #f0f0f0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .legend-bar-fill {
+      height: 100%;
+      background: var(--orange);
+      border-radius: 3px;
+      transition: width .8s cubic-bezier(.4,0,.2,1);
+    }
+    .legend-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    /* 其他匹配 */
+    .other-section { margin-bottom: 28px; }
+    .other-section h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .other-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 14px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .other-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+    }
+    .other-card-name { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .other-card-sim  { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 4px; }
+    .other-card-role { font-size: 12px; color: var(--sub); }
+
+    /* 操作按钮 */
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding-bottom: 20px;
+    }
+    .btn-share, .btn-retry {
+      padding: 13px 28px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: all .2s;
+    }
+    .btn-share {
+      background: var(--orange);
+      color: white;
+      border-color: var(--orange);
+      box-shadow: 0 4px 16px rgba(255,92,26,.3);
+    }
+    .btn-share:hover { background: var(--orange2); transform: translateY(-1px); }
+    .btn-retry {
+      background: white;
+      color: var(--text);
+    }
+    .btn-retry:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ══ 响应式 ══ */
+    @media (max-width: 560px) {
+      .player-card { flex-direction: column; align-items: center; gap: 20px; padding: 24px 20px; }
+      .radar-body  { flex-direction: column; align-items: center; }
+      #radarCanvas { width: 260px; height: 260px; }
+      .dim-preview { grid-template-columns: repeat(2, 1fr); }
+      .other-grid  { grid-template-columns: repeat(3, 1fr); }
+      .q-text { font-size: 16px; }
+      .question-card { padding: 22px 18px; }
+    }
+    @media (max-width: 380px) {
+      .other-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════ LANDING PAGE ══════ -->
+<div id="page-landing" class="page">
+  <nav class="nav">
+    <div class="nav-logo">CS2 <span>DNA</span></div>
+    <span class="nav-badge">BETA</span>
+  </nav>
+
+  <div class="landing-hero">
+    <div class="hero-eyebrow">打法基因测试</div>
+    <h1 class="hero-title">
+      你的打法<br>像哪位<span class="hl">职业选手</span>？
+    </h1>
+    <p class="hero-sub">
+      30道高度还原真实CS2场景的题目，从6个维度精准匹配你与HLTV前20战队选手的打法相似度。
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num"><span>25</span></div>
+        <div class="stat-label">职业选手档案</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span>30</span></div>
+        <div class="stat-label">场景化题目</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span>6</span></div>
+        <div class="stat-label">打法维度</div>
+      </div>
+    </div>
+
+    <div class="player-strip-wrap">
+      <div class="player-strip" id="playerStrip">
+        <!-- 由 JS 填充，并复制一份实现无缝滚动 -->
+      </div>
+    </div>
+
+    <div class="dim-preview">
+      <div class="dim-card"><div class="dim-icon">⚔️</div><div class="dim-name">进攻侵略性</div></div>
+      <div class="dim-card"><div class="dim-icon">🎯</div><div class="dim-name">角色执行力</div></div>
+      <div class="dim-card"><div class="dim-icon">💰</div><div class="dim-name">经济纪律</div></div>
+      <div class="dim-card"><div class="dim-icon">🧠</div><div class="dim-name">残局心理</div></div>
+      <div class="dim-card"><div class="dim-icon">🤝</div><div class="dim-name">团队意识</div></div>
+      <div class="dim-card"><div class="dim-icon">💣</div><div class="dim-name">道具使用</div></div>
+    </div>
+
+    <button class="btn-start" onclick="startQuiz()">
+      开始测试 <span class="btn-arrow">→</span>
+    </button>
+    <p class="landing-note">约 5 分钟完成 · 结果可分享</p>
+  </div>
+</div>
+
+<!-- ══════ QUIZ PAGE ══════ -->
+<div id="page-quiz" class="page hidden">
+  <div class="quiz-wrap">
+    <nav class="nav">
+      <div class="nav-logo">CS2 <span>DNA</span></div>
+    </nav>
+
+    <div class="quiz-header">
+      <span class="dim-label-badge" id="dimLabel">⚔️ 进攻侵略性</span>
+      <span class="progress-count" id="progressCount">1 / 30</span>
+    </div>
+
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill" style="width: 3.3%"></div>
+    </div>
+
+    <div class="question-card" id="questionCard">
+      <div class="q-dim-tag" id="questionDimLabel"></div>
+      <div class="q-text" id="questionText"></div>
+      <div class="options-list" id="optionsList"></div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn-nav" id="btnPrev" onclick="prevQ()">← 上一题</button>
+      <button class="btn-nav primary" id="btnNext" onclick="nextQ()" disabled>下一题 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ RESULT PAGE ══════ -->
+<div id="page-result" class="page hidden">
+  <div class="result-wrap">
+    <nav class="nav">
+      <div class="nav-logo">CS2 <span>DNA</span></div>
+    </nav>
+
+    <div class="result-header">
+      <h2>你的打法最接近</h2>
+    </div>
+
+    <!-- 选手卡 -->
+    <div class="player-card">
+      <div class="ring-wrap">
+        <div class="ring-container">
+          <svg class="ring-svg" width="100" height="100" viewBox="0 0 100 100">
+            <circle class="ring-bg" cx="50" cy="50" r="45"/>
+            <circle class="ring-fill" id="ringFill" cx="50" cy="50" r="45"/>
+          </svg>
+          <div class="ring-label">
+            <div class="ring-pct" id="ringPct">—</div>
+            <div class="ring-match-label">匹配度</div>
+          </div>
+        </div>
+      </div>
+      <div class="player-info">
+        <div class="player-ign" id="resName">—</div>
+        <div class="player-tagline" id="resTagline">—</div>
+        <div class="meta-row" id="resMeta"></div>
+        <div class="player-desc" id="resDesc">—</div>
+      </div>
+    </div>
+
+    <!-- 雷达图 -->
+    <div class="radar-card">
+      <h3>📊 六维打法图谱</h3>
+      <div class="radar-body">
+        <canvas id="radarCanvas" width="240" height="240"></canvas>
+        <div class="radar-legend" id="radarLegend"></div>
+      </div>
+    </div>
+
+    <!-- 其他匹配 -->
+    <div class="other-section">
+      <h3>🔍 你还与这些选手相似</h3>
+      <div class="other-grid" id="otherMatchesGrid"></div>
+    </div>
+
+    <!-- 操作 -->
+    <div class="result-actions">
+      <button class="btn-share" onclick="shareResult()">📤 分享我的结果</button>
+      <button class="btn-retry" onclick="retryQuiz()">🔄 重新测试</button>
+    </div>
+  </div>
+</div>
+
+<script src="players.js"></script>
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
