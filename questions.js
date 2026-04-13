@@ -26,40 +26,40 @@ const QUESTIONS = [
 
   {
     id: 'aggr_1', dimLabel: '⚔️ 进攻侵略性',
-    text: 'T攻 Inferno，你是突破手，队友还在调整位置。这时你已经到了A大香蕉路入口，你会？',
+    text: '在Inferno T方进攻B包点，你是第一身位，队友还在做默认。这时你已经到了香蕉道入口，你会？',
     options: [
-      { text: '单冲进去，先拿信息再说', scores: { aggr: 3, role: 1, eco: -2, clutch: 1, team: -2, util: -1 } },
-      { text: '等大家到位统一时间进', scores: { aggr: -2, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '先扔烟封 CT 和天台，等队友跟上', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 2, util: 3 } },
-      { text: '假进香蕉逼出信息，看情况再决定', scores: { aggr: 1, role: 3, eco: 1, clutch: 2, team: 1, util: 0 } },
+      { text: '冲锋，先拿信息再说', scores: { aggr: 3, role: 1, eco: -2, clutch: 1, team: -2, util: -1 } },
+      { text: '在匪口默认，等大家到位后第二时间进', scores: { aggr: -2, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
+      { text: '在香蕉道默认，扔烟封木桶，等队友跟上', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 2, util: 3 } },
+      { text: '假进香蕉道逼出信息，看情况再决定', scores: { aggr: 1, role: 3, eco: 1, clutch: 2, team: 1, util: 0 } },
     ],
   },
 
   {
     id: 'aggr_2', dimLabel: '⚔️ 进攻侵略性',
-    text: 'CT守 Mirage，你在 A 大坡，对面 B 侧已经连续两局没有威胁。你会？',
+    text: '在Dust2 CT方防守A包点，你在A斜坡，对面已经连续两局没有威胁B包点。你会？',
     options: [
-      { text: '主动越过中路打信息，反压 T 端', scores: { aggr: 3, role: 1, eco: -1, clutch: 1, team: -1, util: 0 } },
-      { text: '继续守坡，B 侧没动静不代表没人', scores: { aggr: -2, role: 2, eco: 2, clutch: 1, team: 1, util: 0 } },
-      { text: '跟 IGL 说一声，考虑移到中路支援', scores: { aggr: 0, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '上推到 T 端坡卡位，主动找人打', scores: { aggr: 2, role: 2, eco: -1, clutch: 2, team: 0, util: 0 } },
+      { text: '主动反推A大打信息，反压匪口', scores: { aggr: 3, role: 1, eco: -1, clutch: 1, team: -1, util: 0 } },
+      { text: '继续守斜坡，B包点没动静不代表没人', scores: { aggr: -2, role: 2, eco: 2, clutch: 1, team: 1, util: 0 } },
+      { text: '跟队友说一声，考虑移到中路支援', scores: { aggr: 0, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
+      { text: '上推到A小，主动找人打', scores: { aggr: 2, role: 2, eco: -1, clutch: 2, team: 0, util: 0 } },
     ],
   },
 
   {
     id: 'aggr_3', dimLabel: '⚔️ 进攻侵略性',
-    text: 'T攻 Dust2 A 包，队友扔了闪光进去。你的第一反应是？',
+    text: '在Dust2 T方进攻A门，你是第一身位，CT方非常喜欢抢A大，队友扔了A大闪光。你的第一反应是？',
     options: [
-      { text: '闪光一亮立刻冲，不给对面喘息时间', scores: { aggr: 3, role: 3, eco: -1, clutch: 1, team: 1, util: 0 } },
-      { text: '闪光过了先峰一个角，确认没人再叫队友进', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 2, util: 0 } },
-      { text: '等烟先封住 CT，进场更稳', scores: { aggr: -1, role: 1, eco: 1, clutch: 0, team: 2, util: 2 } },
-      { text: '听脚步，有动静再进，没动静等队友', scores: { aggr: -2, role: 1, eco: 1, clutch: 2, team: 1, util: 0 } },
+      { text: '闪光一给立刻冲，直接冲到A大拐角，不给对面喘息时间', scores: { aggr: 3, role: 3, eco: -1, clutch: 1, team: 1, util: 0 } },
+      { text: '闪光一给立刻出A门，蓝箱自保', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 2, util: 2 } },
+      { text: '观察对面道具，组织队友第二时间出A门', scores: { aggr: -1, role: 1, eco: 1, clutch: 0, team: 2, util: 0 } },
+      { text: '对面A大人多，兄弟们转B！', scores: { aggr: -2, role: 1, eco: 1, clutch: 2, team: 1, util: 0 } },
     ],
   },
 
   {
     id: 'aggr_4', dimLabel: '⚔️ 进攻侵略性',
-    text: '你在 Overpass，CT 守 B 侧大水管位，对面已经开始打 B 了，你要先手吗？',
+    text: '你在Ancient CT方守B包点，对面已经开始打B了，你要先手吗？',
     options: [
       { text: '立刻 push 水管外反打，不让他们进来', scores: { aggr: 3, role: 2, eco: -1, clutch: 2, team: -1, util: 0 } },
       { text: '守在水管里等，等他们进来后出', scores: { aggr: -1, role: 2, eco: 1, clutch: 3, team: 1, util: 0 } },
