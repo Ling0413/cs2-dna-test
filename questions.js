@@ -292,12 +292,12 @@ const QUESTIONS = [
 
   {
     id: 'nerve_1', dimLabel: '🧱 抗压性',
-    text: '你连续三局失误后，最真实的状态更像？',
+    text: '在被对面“友好互动”后，你在一个1v1残局中战胜对手，此时你会？',
     options: [
-      { text: '还能稳住，先把节奏收回来，手感会回来的', scores: { entry: 0, awp: 0, igl: 1, lurker: 0, star: 1, win: 1, nerve: 3, discipline: 2, aggr: -1, bt: 0 } },
-      { text: '会有点在意，但不至于明显变形', scores: { entry: 0, awp: 0, igl: 0, lurker: 0, star: 1, win: 1, nerve: 1, discipline: 1, aggr: 0, bt: 0 } },
-      { text: '会开始怀疑自己，动作和决策都变得犹豫', scores: { entry: 0, awp: 0, igl: -1, lurker: 0, star: -1, win: 0, nerve: -1, discipline: 0, aggr: -1, bt: 0 } },
-      { text: '很容易崩，后面几局基本都会被情绪带走', scores: { entry: 0, awp: 0, igl: -1, lurker: -1, star: -2, win: -1, nerve: -3, discipline: -2, aggr: -2, bt: 0 } },
+      { text: '直接开鞭，这是善意的鞭，鞭的不是尸是💩，是cncs腐朽的黑暗，这点要分清楚', scores: { entry: 1, awp: 0, igl: 0, lurker: 0, star: 1, win: 1, nerve: -1, discipline: 2, aggr: 3, bt: 1 } },
+      { text: '公频：就这？', scores: { entry: 0, awp: 0, igl: 0, lurker: 0, star: 1, win: 1, nerve: 0, discipline: 1, aggr: 2, bt: 0 } },
+      { text: 'CN最后的残局大师原来是我啊，我还以为是帮玩机器收拾残局的咬人猫呢', scores: { entry: 0, awp: 0, igl: 0, lurker: 2, star: 1, win: 0, nerve: 1, discipline: 0, aggr: 0, bt: 0 } },
+      { text: '和队友麦里说一句：EZ', scores: { entry: 0, awp: 0, igl: 1, lurker: 3, star: 1, win: 2, nerve: 3, discipline: 1, aggr: 1, bt: 0 } },
     ],
   },
   {
