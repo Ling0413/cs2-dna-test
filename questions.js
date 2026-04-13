@@ -1,436 +1,433 @@
 // ═══════════════════════════════════════════════════════════
 //  questions.js  —  CS2 DNA 题目库
-//  共 35 题，7 个维度，每维度 5 题
+//  共 36 题，9 个维度，每维度 4 题
+//  - 位置维度：突破手 / 狙击手 / 指挥 / 自由人 / 大哥位
+//  - 性格维度：胜负欲 / 抗压性 / 纪律性 / 激进度
 //
 //  ⚠️  如需修改或新增题目，直接编辑此文件即可。
 //
-//  维度说明：
-//    aggr   进攻侵略性  —— 主动进攻倾向 vs 稳健防守
-//    role   角色执行力  —— 执行角色职责的专注度
-//    eco    经济纪律    —— 对枪支/经济的管理意识
-//    clutch 残局心理    —— 1vN 或落后时的抗压能力
-//    team   团队意识    —— 配合 vs 个人英雄主义
-//    util   道具使用    —— 烟雾弹/闪光弹/燃烧瓶的重视程度
-//    meme   整活维度    —— 节目效果 / 非常规操作 / 临场整活
-//
 //  分值说明：
-//    每个选项对各维度加减 -3 ~ +3
-//    每维度最多 ±15（5题 × ±3）
-//    最终归一化到 0~100
+//  - 每个选项都会对全部 9 个维度进行打分
+//  - 单维分值范围约为 -3 ~ +3
+//  - 最终由 app.js 动态归一化到 0~100
 // ═══════════════════════════════════════════════════════════
+
+const S = (entry, awp, igl, lurker, star, win, nerve, discipline, aggr) => ({
+  entry,
+  awp,
+  igl,
+  lurker,
+  star,
+  win,
+  nerve,
+  discipline,
+  aggr,
+});
 
 const QUESTIONS = [
 
   // ══════════════════════════════════════
-  //  维度1：进攻侵略性（5题）
+  //  位置维度1：突破手（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'aggr_1', dimLabel: '⚔️ 进攻侵略性',
-    text: '在Inferno T方进攻B包点，你是第一身位，队友还在做默认。这时你已经到了香蕉道入口，你会？',
+    id: 'entry_1', dimLabel: '💥 突破手',
+    text: 'Inferno T 方默认开局，你是最靠前的人。香蕉道口有机会吃闪强顶，你会怎么处理？',
     options: [
-      { text: '冲锋，先拿信息再说', scores: { aggr: 3, role: 1, eco: -2, clutch: 1, team: -2, util: -1 } },
-      { text: '在匪口默认，等大家到位后第二时间进', scores: { aggr: -2, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '在香蕉道默认，扔烟封木桶，等队友跟上', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 2, util: 3 } },
-      { text: '假进香蕉道逼出信息，看情况再决定', scores: { aggr: 1, role: 3, eco: 1, clutch: 2, team: 1, util: 0 } },
+      { text: '直接吃闪顶进去，先把第一波对抗打出来', scores: S(3, -1, 0, -2, 1, 2, 0, -2, 3) },
+      { text: '往前压半步拿信息，但一定给自己留退路', scores: S(2, 0, 0, -1, 1, 1, 1, 0, 1) },
+      { text: '等队友道具和补枪都到位，再统一展开', scores: S(0, 0, 1, -1, 0, 0, 1, 3, -1) },
+      { text: '先 fake 一下逼反应，确认信息后再决定要不要硬进', scores: S(1, 1, 2, 1, -1, 0, 2, 2, 0) },
     ],
   },
-
   {
-    id: 'aggr_2', dimLabel: '⚔️ 进攻侵略性',
-    text: '在Dust2 CT方防守A包点，你在A斜坡，对面已经连续两局没有威胁B包点。你会？',
+    id: 'entry_2', dimLabel: '💥 突破手',
+    text: 'Mirage A 爆弹前，你知道自己大概率是第一个飞进包点的人。你最像哪种心态？',
     options: [
-      { text: '主动反推A大打信息，反压匪口', scores: { aggr: 3, role: 1, eco: -1, clutch: 1, team: -1, util: 0 } },
-      { text: '继续守斜坡，B包点没动静不代表没人', scores: { aggr: -2, role: 2, eco: 2, clutch: 1, team: 1, util: 0 } },
-      { text: '跟队友说一声，考虑移到中路支援', scores: { aggr: 0, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '上推到A小，主动找人打', scores: { aggr: 2, role: 2, eco: -1, clutch: 2, team: 0, util: 0 } },
+      { text: '我就是吃第一颗子弹的人，能把包点撞开最重要', scores: S(3, -1, 0, -2, 1, 2, 1, -1, 3) },
+      { text: '可以先飞，但一定要确保第二身位能跟上 trade', scores: S(2, 0, 1, -1, 1, 1, 1, 1, 1) },
+      { text: '我更想当第二拍，让第一身位先把信息送出来', scores: S(-1, 0, 0, 0, 1, 0, 1, 2, -1) },
+      { text: '不如先假爆骗回防，等对面露更多信息再打', scores: S(0, 0, 2, 1, 0, 0, 2, 2, -2) },
     ],
   },
-
   {
-    id: 'aggr_3', dimLabel: '⚔️ 进攻侵略性',
-    text: '在Dust2 T方进攻A门，你是第一身位，CT方非常喜欢抢A大，队友扔了A大闪光。你的第一反应是？',
+    id: 'entry_3', dimLabel: '💥 突破手',
+    text: '半起局想找突破口时，你最自然的承担方式是什么？',
     options: [
-      { text: '闪光一给立刻冲，直接冲到A大拐角，不给对面喘息时间', scores: { aggr: 3, role: 3, eco: -1, clutch: 1, team: 1, util: 0 } },
-      { text: '闪光一给立刻出A门，蓝箱自保', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 2, util: 2 } },
-      { text: '观察对面道具，组织队友第二时间出A门', scores: { aggr: -1, role: 1, eco: 1, clutch: 0, team: 2, util: 0 } },
-      { text: '对面A大人多，兄弟们转B！', scores: { aggr: -2, role: 1, eco: 1, clutch: 2, team: 1, util: 0 } },
+      { text: '拿最简单的枪直接顶第一身位，死也要把口子撞出来', scores: S(3, -1, 0, -2, 0, 2, 0, -2, 3) },
+      { text: '我会抢一个前点 timing，先争取白赚一枪', scores: S(2, 0, 0, 1, 1, 1, 1, -1, 2) },
+      { text: '半起更要讲配合，先把资源和冲点顺序说清楚', scores: S(0, -1, 2, -1, 0, 1, 1, 3, -1) },
+      { text: '我更想摸边线和 timing，不愿意跟大部队正面送', scores: S(-1, 0, 0, 3, 0, 0, 2, 1, 0) },
     ],
   },
-
   {
-    id: 'aggr_4', dimLabel: '⚔️ 进攻侵略性',
-    text: '你在Ancient CT方守B包点，对面已经开始打B了，你要先手吗？',
+    id: 'entry_4', dimLabel: '💥 突破手',
+    text: 'CT 回防 3v3，对面刚下包，队友说“谁先进去找人”？你会？',
     options: [
-      { text: '立刻 push 水管外反打，不让他们进来', scores: { aggr: 3, role: 2, eco: -1, clutch: 2, team: -1, util: 0 } },
-      { text: '守在水管里等，等他们进来后出', scores: { aggr: -1, role: 2, eco: 1, clutch: 3, team: 1, util: 0 } },
-      { text: '水管外卡位，守住入口不让进场', scores: { aggr: 1, role: 3, eco: 1, clutch: 2, team: 1, util: 0 } },
-      { text: '呼叫队友来支援，自己先拖时间', scores: { aggr: -2, role: 1, eco: 1, clutch: 1, team: 3, util: 1 } },
-    ],
-  },
-
-  {
-    id: 'aggr_5', dimLabel: '⚔️ 进攻侵略性',
-    text: '比赛打到加时赛，连续几局T端没有进展，你会建议？',
-    options: [
-      { text: '全队强冲一边，靠气势打穿', scores: { aggr: 3, role: 1, eco: -2, clutch: 1, team: 1, util: -1 } },
-      { text: '找到对面漏洞，一侧用快速道具偷包', scores: { aggr: 1, role: 3, eco: 0, clutch: 1, team: 2, util: 3 } },
-      { text: '慢打，拉超时，消磨 CT 神经', scores: { aggr: -2, role: 2, eco: 2, clutch: 2, team: 2, util: 1 } },
-      { text: '各自随机应变，不要太固定', scores: { aggr: 0, role: 1, eco: 0, clutch: 2, team: -1, util: 0 } },
+      { text: '我先穿烟或跳拉，把包点第一层压力吃掉', scores: S(3, -1, 0, -1, 1, 2, 1, -2, 3) },
+      { text: '可以先手，但必须有人给闪和补枪，不裸送', scores: S(2, 0, 1, -1, 1, 1, 1, 1, 1) },
+      { text: '别急着冲，先把交叉火力和同步进点理清楚', scores: S(-1, 0, 2, 0, 0, 0, 2, 3, -1) },
+      { text: '我去侧面绕一个 timing，从别的角度把残局切开', scores: S(0, 0, 0, 3, 0, 1, 2, 1, 0) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度2：角色执行力（5题）
+  //  位置维度2：狙击手（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'role_1', dimLabel: '🎯 角色执行力',
-    text: '你在队里最认同哪个角色定位？',
+    id: 'awp_1', dimLabel: '🎯 狙击手',
+    text: 'CT 开局拿到全队最好的枪时，你最想怎么利用它？',
     options: [
-      { text: '突破手：我是第一个进 A 包 / B 包的人', scores: { aggr: 3, role: 3, eco: -1, clutch: 1, team: 1, util: 0 } },
-      { text: '主狙：我来控制关键角度，压制对面节奏', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 1, util: 0 } },
-      { text: 'IGL：我来决定打哪边、什么时候进', scores: { aggr: 0, role: 2, eco: 2, clutch: 1, team: 3, util: 2 } },
-      { text: '道具手：我来保证进场路线上的烟和闪都到位', scores: { aggr: -1, role: 3, eco: 1, clutch: 0, team: 3, util: 3 } },
+      { text: '抢一条最长最干净的枪线，让对面默认直接变形', scores: S(-1, 3, 0, 0, 1, 1, 2, 2, 0) },
+      { text: '主动拿激进枪位，打完一枪立刻换角度继续压', scores: S(1, 2, -1, -1, 1, 2, 1, -1, 2) },
+      { text: '先站稳关键位，等队友信息来了再决定要不要挪动', scores: S(0, 2, 1, 1, 0, 1, 2, 2, -1) },
+      { text: '枪位只是工具，核心还是看整队怎么布置更舒服', scores: S(-1, 1, 2, 0, 0, 0, 1, 3, -1) },
     ],
   },
-
   {
-    id: 'role_2', dimLabel: '🎯 角色执行力',
-    text: '打 Nuke，进攻主打上场还是下场？',
+    id: 'awp_2', dimLabel: '🎯 狙击手',
+    text: 'T 方默认拿到一把大狙，你更像哪种使用方式？',
     options: [
-      { text: '必打上场，下场 CT 位太难突破', scores: { aggr: 1, role: 2, eco: 0, clutch: 0, team: 1, util: 1 } },
-      { text: '先骚扰下场外围，消耗 CT 资源再主打上场', scores: { aggr: 0, role: 3, eco: 1, clutch: 0, team: 2, util: 2 } },
-      { text: '假打一边，真打另一边，看 CT 怎么动', scores: { aggr: 1, role: 3, eco: 0, clutch: 1, team: 2, util: 2 } },
-      { text: '看对面读图习惯，哪边人少打哪边', scores: { aggr: 0, role: 2, eco: 1, clutch: 2, team: 2, util: 1 } },
+      { text: '先控长线，把对面最值钱的位置压得不敢动', scores: S(-1, 3, 1, 0, 1, 1, 2, 2, 0) },
+      { text: '用它开门，第一枪一响就往前滚节奏', scores: S(2, 2, -1, -1, 1, 2, 1, -1, 2) },
+      { text: '围绕这把枪去调默认，让全队都吃到它的威慑力', scores: S(0, 2, 3, 0, 0, 1, 1, 3, -1) },
+      { text: '我更想拿去走冷门线，专门抓 timing 和转点', scores: S(0, 1, 0, 3, 0, 1, 2, 1, 0) },
     ],
   },
-
   {
-    id: 'role_3', dimLabel: '🎯 角色执行力',
-    text: '你是自由人，这局 IGL 让你去古堡侧打信息，但你感觉对面全压 A 了，你会？',
+    id: 'awp_3', dimLabel: '🎯 狙击手',
+    text: '残局 1v2，你手里是 AWP，地图上还剩一条大枪线可以利用。你会？',
     options: [
-      { text: '按计划走，IGL 的判断比感觉准', scores: { aggr: -1, role: 2, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '喊麦告诉 IGL 我的判断，他说怎么做就怎么做', scores: { aggr: 0, role: 2, eco: 0, clutch: 1, team: 2, util: 0 } },
-      { text: '自己决定改走 A 侧，结果自己负责', scores: { aggr: 2, role: 2, eco: 0, clutch: 2, team: -2, util: 0 } },
-      { text: '灵活走中路，两边都留退路', scores: { aggr: 1, role: 3, eco: 0, clutch: 2, team: 1, util: 0 } },
+      { text: '利用枪线一点点切，对面不给机会我绝不乱动', scores: S(-1, 3, 0, 0, 1, 1, 3, 2, -1) },
+      { text: '先打一枪再主动换位，让残局始终在我节奏里', scores: S(1, 2, 0, 1, 1, 2, 2, 0, 1) },
+      { text: '先把时间和路线全部算清楚，再决定从哪边切片', scores: S(-1, 2, 2, 0, 0, 1, 3, 3, -1) },
+      { text: '不想被 AWP 限制，我宁可找机会换近点武器打', scores: S(1, -1, 0, 1, 1, 0, 1, 0, 1) },
     ],
   },
-
   {
-    id: 'role_4', dimLabel: '🎯 角色执行力',
-    text: '你拿着 AWP 在 Mirage A 大位守，对面冲烟进来了，烟里有走动声，你选？',
+    id: 'awp_4', dimLabel: '🎯 狙击手',
+    text: '你守 Mirage A 大，烟边有动静。你最自然的处理方式是？',
     options: [
-      { text: '主动推到烟边缘，抢一个近距离角度', scores: { aggr: 3, role: 2, eco: -1, clutch: 2, team: 0, util: 0 } },
-      { text: '退后守烟出来的角，等他出来再打', scores: { aggr: -1, role: 3, eco: 1, clutch: 2, team: 0, util: 0 } },
-      { text: '换手枪，AWP 太近没法用', scores: { aggr: 0, role: 2, eco: -1, clutch: 2, team: 0, util: 0 } },
-      { text: '扔一颗 HE 进烟里，搞信息再做决定', scores: { aggr: 0, role: 2, eco: 0, clutch: 1, team: 1, util: 3 } },
-    ],
-  },
-
-  {
-    id: 'role_5', dimLabel: '🎯 角色执行力',
-    text: '快结束局，你是 CT，对面已经在 A 包下包，队友全死光了，只剩你一个人，你会？',
-    options: [
-      { text: '直接冲进包快拆，赌一把', scores: { aggr: 3, role: 2, eco: -1, clutch: 3, team: 0, util: 0 } },
-      { text: '扔烟隔断，分段清人再拆包', scores: { aggr: 0, role: 2, eco: 0, clutch: 2, team: 0, util: 3 } },
-      { text: '根据包点位置判断进攻路线，不死冲', scores: { aggr: 1, role: 3, eco: 0, clutch: 3, team: 0, util: 1 } },
-      { text: '时间快到了就保枪，下局有枪才有机会', scores: { aggr: -2, role: 1, eco: 3, clutch: 2, team: 0, util: 0 } },
+      { text: '退一步架烟出，不把自己送进无意义近战', scores: S(-1, 3, 0, 0, 1, 1, 2, 3, -1) },
+      { text: '主动贴烟找非常规角，打一枪就让对面长记性', scores: S(1, 2, -1, 0, 1, 2, 1, -1, 2) },
+      { text: '先让队友补信息或道具，再决定要不要继续卡', scores: S(0, 2, 2, 0, 0, 1, 2, 3, -1) },
+      { text: '直接换位到更远更安全的线，优先保住主武器价值', scores: S(-1, 2, 1, 1, 0, 0, 2, 2, -2) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度3：经济纪律（5题）
+  //  位置维度3：指挥（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'eco_1', dimLabel: '💰 经济纪律',
-    text: '连输两局，现在是 eco 局，你的打法是？',
+    id: 'igl_1', dimLabel: '📣 指挥',
+    text: 'Freeze time 最后十秒，你脑子里最先整理的内容通常是什么？',
     options: [
-      { text: '全力冲，eco 局拼一把，换人就赚了', scores: { aggr: 3, role: 0, eco: -3, clutch: 1, team: -1, util: -2 } },
-      { text: '买一把沙鹰，平衡输出和保枪', scores: { aggr: 0, role: 1, eco: 1, clutch: 1, team: 1, util: 0 } },
-      { text: '全保，稳稳等下局全买', scores: { aggr: -3, role: 1, eco: 3, clutch: 0, team: 2, util: 0 } },
-      { text: '看全队状态，大家保持一致就行', scores: { aggr: -1, role: 1, eco: 2, clutch: 0, team: 3, util: 0 } },
+      { text: '资源分配、默认路线、出事后的第二套预案', scores: S(-1, 0, 3, 0, 0, 1, 1, 3, -1) },
+      { text: '先看哪位队友手感最好，这局最后球要不要做给他', scores: S(0, 0, 1, 0, 2, 2, 1, 1, 0) },
+      { text: '我更在意自己第一波怎么打，战术先走着看', scores: S(2, 0, -1, -1, 1, 1, 0, -1, 2) },
+      { text: '先想边线和 timing，看对面哪里最可能露空档', scores: S(0, 0, 1, 3, 0, 1, 2, 1, 0) },
     ],
   },
-
   {
-    id: 'eco_2', dimLabel: '💰 经济纪律',
-    text: '手枪局赢了，下局强势买，但你的钱只够买 M4 或者 Deagle + 一套道具，你选？',
+    id: 'igl_2', dimLabel: '📣 指挥',
+    text: 'Mirage 中路突然失守，队友给出的信息还互相冲突。你更像怎么处理？',
     options: [
-      { text: '买 M4，枪比道具重要', scores: { aggr: 1, role: 1, eco: 0, clutch: 1, team: 0, util: -2 } },
-      { text: '买 Deagle + 全套道具，支援队友进包', scores: { aggr: -1, role: 2, eco: 1, clutch: 0, team: 2, util: 3 } },
-      { text: '问队里缺什么，按需决定', scores: { aggr: -1, role: 1, eco: 1, clutch: 0, team: 3, util: 1 } },
-      { text: '找队友借一把，下局补回来', scores: { aggr: 0, role: 1, eco: -1, clutch: 0, team: 2, util: 0 } },
+      { text: '我先整合信息并直接拍板，哪怕有风险也不能犹豫', scores: S(0, 0, 3, 0, 0, 2, 2, 3, 0) },
+      { text: '先抢一条线验证真假，再决定全队怎么动', scores: S(1, 1, 1, 1, 0, 1, 2, 1, 1) },
+      { text: '先稳住阵型，让每个人把当前位置守好再说', scores: S(-1, 0, 2, 0, 0, 0, 2, 3, -2) },
+      { text: '谁信息最硬我就听谁，别再现场重新设计了', scores: S(0, 0, -1, 0, 1, 0, 0, 1, 0) },
     ],
   },
-
   {
-    id: 'eco_3', dimLabel: '💰 经济纪律',
-    text: '你保住了一把 AWP，现在队友全死了，你是 CT，还有时间，你会？',
+    id: 'igl_3', dimLabel: '📣 指挥',
+    text: '连输三局后暂停，你在队里最像说哪类话？',
     options: [
-      { text: '拆包保枪，不冒险打残局', scores: { aggr: -2, role: 2, eco: 3, clutch: 2, team: 0, util: 0 } },
-      { text: '单挑，能赢就赢，AWP 要物尽其用', scores: { aggr: 2, role: 2, eco: -2, clutch: 2, team: 0, util: 0 } },
-      { text: '看剩几个人和位置，判断是否值得打', scores: { aggr: 0, role: 3, eco: 2, clutch: 3, team: 0, util: 0 } },
-      { text: '先扔道具消耗，再决定要不要冲', scores: { aggr: 0, role: 2, eco: 0, clutch: 2, team: 0, util: 3 } },
+      { text: '先别急，我把下局默认、资源和提速点重新说一遍', scores: S(-1, 0, 3, 0, 0, 1, 1, 3, -1) },
+      { text: '球往手热的人身上做，先把关键分抢回来', scores: S(0, 0, 1, 0, 2, 2, 1, 0, 1) },
+      { text: '给我两颗闪，我先去把气势和人数打回来', scores: S(2, 0, -1, -1, 1, 2, 0, -2, 3) },
+      { text: '我去换一条边线试试，看能不能把对面调起来', scores: S(0, 0, 1, 3, 0, 1, 2, 1, 0) },
     ],
   },
-
   {
-    id: 'eco_4', dimLabel: '💰 经济纪律',
-    text: '全队 eco，但 A 包的位置拿到了，T 端要不要下包？',
+    id: 'igl_4', dimLabel: '📣 指挥',
+    text: 'T 方默认打到一半，原计划机会一般，但你突然读到对面可能漏了一个点。你会？',
     options: [
-      { text: '下包，逼对面来拆包反攻更占优势', scores: { aggr: 1, role: 2, eco: 1, clutch: 1, team: 2, util: 1 } },
-      { text: '不下包，eco 局能换人就值了', scores: { aggr: 0, role: 1, eco: 3, clutch: 0, team: 1, util: 0 } },
-      { text: '能换人就下，换不了就带着包跑', scores: { aggr: 2, role: 2, eco: 1, clutch: 1, team: 1, util: 0 } },
-      { text: '看包点好不好守，好守就下，不好守就算了', scores: { aggr: 0, role: 3, eco: 2, clutch: 1, team: 1, util: 1 } },
-    ],
-  },
-
-  {
-    id: 'eco_5', dimLabel: '💰 经济纪律',
-    text: '你的 M4 这局被 rush 打死掉包了，下局经济怎么处理？',
-    options: [
-      { text: '直接强买，掉包的亏要靠赢回来', scores: { aggr: 1, role: 1, eco: -2, clutch: 0, team: 0, util: 0 } },
-      { text: '跟队里说掉包了，大家一起重算经济', scores: { aggr: -1, role: 1, eco: 2, clutch: 0, team: 3, util: 0 } },
-      { text: '自己硬扛，不拖累队伍', scores: { aggr: 0, role: 1, eco: 1, clutch: 1, team: 1, util: 0 } },
-      { text: '看队里大盘，按队伍策略走', scores: { aggr: -1, role: 2, eco: 3, clutch: 0, team: 3, util: 0 } },
+      { text: '先统一沟通，再让全队一起改，不接受各自动', scores: S(0, 0, 3, 0, 0, 1, 1, 3, 0) },
+      { text: '我会把人和资源立刻压到最值钱的点，快速转节奏', scores: S(1, 0, 2, 0, 1, 2, 1, 1, 1) },
+      { text: '让一名自由人先摸实，再决定要不要全改计划', scores: S(0, 0, 2, 2, 0, 1, 2, 2, -1) },
+      { text: '我更信现场感觉，自己先动，队友能跟上最好', scores: S(1, 0, -2, 0, 1, 1, 0, -3, 2) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度4：残局心理（5题）
+  //  位置维度4：自由人（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'clutch_1', dimLabel: '🧠 残局心理',
-    text: '1v3 残局，你有 AK，对面还没下包，剩 30 秒，你怎么打？',
+    id: 'lurker_1', dimLabel: '🕶️ 自由人',
+    text: '默认局里队友在正面做声势时，你最想承担哪种任务？',
     options: [
-      { text: '直接冲包点，速战速决', scores: { aggr: 3, role: 1, eco: -1, clutch: 2, team: 0, util: 0 } },
-      { text: '声东击西，假进 A 逼 B 侧出来', scores: { aggr: 1, role: 2, eco: 0, clutch: 3, team: 0, util: 1 } },
-      { text: '稳步推进，分段清人，不乱冲', scores: { aggr: -1, role: 2, eco: 1, clutch: 3, team: 0, util: 1 } },
-      { text: '扔烟进包点，烟里强拆', scores: { aggr: 0, role: 2, eco: 0, clutch: 2, team: 0, util: 3 } },
+      { text: '单走一条边线，用 timing 和脚步把对面切开', scores: S(0, 0, 0, 3, 1, 1, 2, 1, 0) },
+      { text: '留在正面第二层，等对面被逼出来再吃掉回防', scores: S(1, 0, 0, 1, 2, 1, 1, 1, 1) },
+      { text: '我会更多帮全图沟通，防止正面和边线脱节', scores: S(-1, 0, 2, 1, 0, 1, 1, 3, -1) },
+      { text: '不喜欢单摸，我宁可跟着大部队一起把正面打穿', scores: S(2, 0, 0, -2, 1, 1, 0, 0, 2) },
     ],
   },
-
   {
-    id: 'clutch_2', dimLabel: '🧠 残局心理',
-    text: '比赛大分落后 5:10，下半场你的状态是？',
+    id: 'lurker_2', dimLabel: '🕶️ 自由人',
+    text: 'Ancient 默认打很久了，对面回防总是很快。你最像怎么破这个局？',
     options: [
-      { text: '没变化，一局一局打，追回来也说不定', scores: { aggr: 0, role: 2, eco: 1, clutch: 3, team: 2, util: 0 } },
-      { text: '反而更放松，反正没啥压力，冲起来', scores: { aggr: 2, role: 1, eco: -1, clutch: 2, team: 0, util: 0 } },
-      { text: '跟队友沟通，找出哪里出了问题', scores: { aggr: -1, role: 2, eco: 1, clutch: 2, team: 3, util: 1 } },
-      { text: '确实难受，但绷住，不能崩', scores: { aggr: -1, role: 1, eco: 0, clutch: 2, team: 1, util: 0 } },
+      { text: '我去摸最远的边线，专门抓第一个回防的人', scores: S(0, 0, 0, 3, 1, 1, 2, 1, 0) },
+      { text: '先做假动作把对面调动，再从最薄的位置切入', scores: S(0, 0, 2, 2, 0, 1, 2, 2, 0) },
+      { text: '别磨了，直接提速打一边，让他们来不及回防', scores: S(2, 0, 0, -1, 1, 2, 0, -1, 3) },
+      { text: '把最后收口的球做给核心，我更愿意做外围托底', scores: S(-1, 0, 1, 2, 1, 1, 1, 2, -1) },
     ],
   },
-
   {
-    id: 'clutch_3', dimLabel: '🧠 残局心理',
-    text: '你连续三局死得很早，手感很差。下一局你怎么调整？',
+    id: 'lurker_3', dimLabel: '🕶️ 自由人',
+    text: 'Nuke 外场这局对面给得很少，但你总觉得有空档。你会？',
     options: [
-      { text: '换更激进的打法，主动出击找手感', scores: { aggr: 3, role: 0, eco: -1, clutch: 1, team: -1, util: 0 } },
-      { text: '稳一稳，打简单的，先把准心打回来', scores: { aggr: -2, role: 2, eco: 1, clutch: 2, team: 1, util: 0 } },
-      { text: '跟队友说让我打道具手，不承担核心压力', scores: { aggr: -2, role: 2, eco: 1, clutch: 1, team: 3, util: 2 } },
-      { text: '不调整，状态正常会波动，保持自己打法', scores: { aggr: 0, role: 1, eco: 1, clutch: 3, team: 1, util: 0 } },
+      { text: '慢慢摸进去吃 timing，不确认前尽量不暴露脚步', scores: S(0, 0, 0, 3, 1, 1, 2, 2, 0) },
+      { text: '先抢一条线验证，真有空档就继续往里切', scores: S(1, 1, 0, 2, 0, 1, 2, 1, 1) },
+      { text: '我会先跟队友确认补枪距离，不想单人冒险送掉地图', scores: S(-1, 0, 1, 1, 0, 0, 1, 3, -1) },
+      { text: '有感觉就直接压，把犹豫时间换成枪战', scores: S(2, 0, -1, 1, 1, 1, 0, -2, 3) },
     ],
   },
-
   {
-    id: 'clutch_4', dimLabel: '🧠 残局心理',
-    text: '1v1 沙鹰对 AK，你在 Inferno 香蕉路里对峙，第一反应？',
+    id: 'lurker_4', dimLabel: '🕶️ 自由人',
+    text: 'CT 方守点时，对面一侧道具很多，但另一侧突然很安静。你通常会？',
     options: [
-      { text: '主动 peek，沙鹰换 AK 对我有利', scores: { aggr: 3, role: 1, eco: 1, clutch: 2, team: 0, util: 0 } },
-      { text: '等他来，守角比主动出击更稳', scores: { aggr: -2, role: 2, eco: 1, clutch: 3, team: 0, util: 0 } },
-      { text: '扔烟隔断，绕到另一个角度重新打', scores: { aggr: 0, role: 2, eco: 0, clutch: 3, team: 0, util: 3 } },
-      { text: '快速变换位置，打乱对面的准心预判', scores: { aggr: 1, role: 2, eco: 0, clutch: 3, team: 0, util: 1 } },
-    ],
-  },
-
-  {
-    id: 'clutch_5', dimLabel: '🧠 残局心理',
-    text: '你刚靠 1v2 把局拿下来了，队友语音里炸了。下一局你会？',
-    options: [
-      { text: '乘胜追击，这股气势不能停', scores: { aggr: 2, role: 1, eco: -1, clutch: 1, team: 1, util: 0 } },
-      { text: '回到正常节奏，别因为一个 clutch 飘了', scores: { aggr: -1, role: 2, eco: 1, clutch: 3, team: 1, util: 0 } },
-      { text: '感受了一下，然后当没发生过', scores: { aggr: -1, role: 2, eco: 1, clutch: 3, team: 0, util: 0 } },
-      { text: '鼓励队友，把气氛继续带起来', scores: { aggr: 0, role: 1, eco: 0, clutch: 1, team: 3, util: 0 } },
+      { text: '偷看安静那条边线，专抓他们埋伏的 timing', scores: S(0, 0, 0, 3, 0, 1, 2, 1, 0) },
+      { text: '先换到能同时兼顾两条线的位置，尽量信息最大化', scores: S(-1, 1, 1, 2, 0, 1, 2, 2, -1) },
+      { text: '先和队友协调站位，一边动一边必须有人能补', scores: S(-1, 0, 2, 1, 0, 0, 1, 3, -1) },
+      { text: '主动反清正面，用侵略性直接打断他们的节奏', scores: S(2, 0, -1, -1, 1, 1, 0, -2, 3) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度5：团队意识（5题）
+  //  位置维度5：大哥位（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'team_1', dimLabel: '🤝 团队意识',
-    text: '你这局状态特别好，但 IGL 要你去放烟打道具手，你真实的反应是？',
+    id: 'star_1', dimLabel: '👑 大哥位',
+    text: '关键长枪局，队里只能优先喂一个人资源。你最认同哪种思路？',
     options: [
-      { text: '没问题，团队需要什么我就打什么', scores: { aggr: -1, role: 3, eco: 0, clutch: 0, team: 3, util: 2 } },
-      { text: '跟 IGL 说我状态好，让我打核心位', scores: { aggr: 1, role: 1, eco: 0, clutch: 1, team: 0, util: 0 } },
-      { text: '执行，但有点委屈', scores: { aggr: -1, role: 2, eco: 0, clutch: 0, team: 2, util: 1 } },
-      { text: '先问清楚为什么，理解了再全力做', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 2, util: 1 } },
+      { text: '最好的资源应该给最能终结这局的人，我愿意扛这个责任', scores: S(1, 1, 0, 0, 3, 3, 2, 0, 1) },
+      { text: '资源可以集中，但前提是不能把队伍结构弄散', scores: S(0, 0, 1, 0, 2, 2, 2, 2, 0) },
+      { text: '我更愿意把资源让给团队里更适配这张图和这波战术的人', scores: S(-1, 0, 1, 1, -1, 0, 1, 3, -1) },
+      { text: '别固定喂一个，谁先拿到机会谁就接着打', scores: S(1, 0, -1, 1, 1, 1, 1, -1, 1) },
     ],
   },
-
   {
-    id: 'team_2', dimLabel: '🤝 团队意识',
-    text: '打 Mirage，队友在中路失守了，对面控制了 mid。你怎么反应？',
+    id: 'star_2', dimLabel: '👑 大哥位',
+    text: '比赛胶着到最后几分，队友都默认这一局会围着你打。你的感觉更像？',
     options: [
-      { text: '立刻分人去支援 mid，mid 不能丢', scores: { aggr: 1, role: 1, eco: 0, clutch: 0, team: 3, util: 1 } },
-      { text: '守好自己的位置，mid 没了就换打法', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 1, util: 0 } },
-      { text: '让 IGL 出方案，大家统一应对', scores: { aggr: -1, role: 1, eco: 1, clutch: 0, team: 3, util: 0 } },
-      { text: '主动 push mid 抢回控制权', scores: { aggr: 2, role: 2, eco: 0, clutch: 1, team: 1, util: 1 } },
+      { text: '可以，把最关键的一拍交给我，我就吃这种球', scores: S(1, 0, 0, 0, 3, 3, 2, 0, 1) },
+      { text: '我能接，但得先把道具、补枪和残局站位全部配好', scores: S(0, 0, 1, 0, 2, 2, 2, 2, 0) },
+      { text: '我不排斥当核心，但不希望全队脑子里只剩“做给我”', scores: S(0, 0, 2, 1, 1, 1, 2, 3, -1) },
+      { text: '我更愿意让真正手热的人接球，别为了名义核心硬做', scores: S(-1, 0, 1, 0, -1, 0, 1, 2, -1) },
     ],
   },
-
   {
-    id: 'team_3', dimLabel: '🤝 团队意识',
-    text: '队友反复在同一个位置被抓，你会？',
+    id: 'star_3', dimLabel: '👑 大哥位',
+    text: 'T 方已经打进包点，局面变成 3v3。你最舒服的残局定位是什么？',
     options: [
-      { text: '喊麦提醒他换位置，别死在同一个坑里', scores: { aggr: 0, role: 1, eco: 0, clutch: 0, team: 3, util: 0 } },
-      { text: '主动给他做闪光掩护，帮他创造机会', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 3, util: 3 } },
-      { text: '不干涉，他自己会想明白的', scores: { aggr: 0, role: 1, eco: 0, clutch: 1, team: 0, util: 0 } },
-      { text: '跟 IGL 说，统一调整站位', scores: { aggr: -1, role: 1, eco: 0, clutch: 0, team: 2, util: 0 } },
+      { text: '把最关键的 trade 位留给我，我来收最硬的枪', scores: S(1, 0, 0, 0, 3, 2, 2, 0, 1) },
+      { text: '我可以去最值钱的枪位，用位置优势把回防掐死', scores: S(0, 1, 0, 0, 2, 2, 2, 1, 0) },
+      { text: '先把交叉火力和补枪关系定清楚，残局不能靠感觉乱打', scores: S(-1, 0, 2, 0, 0, 1, 2, 3, -1) },
+      { text: '我想去侧面做变化，用 timing 把回防线切碎', scores: S(0, 0, 0, 2, 1, 1, 2, 1, 0) },
     ],
   },
-
   {
-    id: 'team_4', dimLabel: '🤝 团队意识',
-    text: '打 Dust2，你主张走 B 侧，但 IGL 叫打 A 侧，你的选择？',
+    id: 'star_4', dimLabel: '👑 大哥位',
+    text: '你怎么理解“队里的大哥位”这个角色？',
     options: [
-      { text: '说出我的判断，但最终听 IGL 的', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 2, util: 0 } },
-      { text: '闭嘴执行就是了，IGL 做决定不是我的事', scores: { aggr: -1, role: 2, eco: 0, clutch: 0, team: 2, util: 0 } },
-      { text: '据理力争，我的理由更充分', scores: { aggr: 1, role: 1, eco: 0, clutch: 1, team: 0, util: 0 } },
-      { text: '打完这局再讨论，先把这局打完', scores: { aggr: -1, role: 2, eco: 1, clutch: 0, team: 3, util: 0 } },
-    ],
-  },
-
-  {
-    id: 'team_5', dimLabel: '🤝 团队意识',
-    text: '什么情况下你会主动打破原来的战术计划？',
-    options: [
-      { text: '发现明显空位立刻改，机会不等人', scores: { aggr: 2, role: 2, eco: 0, clutch: 1, team: -1, util: 0 } },
-      { text: '原则上不改，擅自改计划风险太高', scores: { aggr: -2, role: 2, eco: 1, clutch: 0, team: 2, util: 0 } },
-      { text: '先喊麦告诉 IGL，他同意了再改', scores: { aggr: -1, role: 1, eco: 0, clutch: 0, team: 3, util: 0 } },
-      { text: '只有明显被对面读穿的时候才改', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 2, util: 0 } },
+      { text: '关键时刻必须站出来，资源和责任都要敢接', scores: S(1, 0, 0, 0, 3, 3, 2, 0, 1) },
+      { text: '不只是打高光，更重要的是高资源下保持稳定兑现', scores: S(0, 1, 1, 0, 2, 2, 3, 2, 0) },
+      { text: '大哥位也得服务体系，不能因为自己是核心就乱要球', scores: S(-1, 0, 2, 0, 1, 1, 2, 3, -1) },
+      { text: '真大哥不一定吃最多资源，很多时候是残局里最冷静的人', scores: S(0, 0, 1, 1, 2, 2, 3, 2, -1) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度6：道具使用（5题）
+  //  性格维度1：胜负欲（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'util_1', dimLabel: '💣 道具使用',
-    text: 'T攻 Inferno A 包，你会优先用什么道具进场？',
+    id: 'win_1', dimLabel: '🏆 胜负欲',
+    text: '打天梯、5E 或内战时，你对输赢的真实态度更像？',
     options: [
-      { text: '烟封 CT + 天台，再扔闪光进', scores: { aggr: 0, role: 3, eco: 0, clutch: 0, team: 2, util: 3 } },
-      { text: '直接扔闪光进去，速战速决', scores: { aggr: 2, role: 2, eco: 0, clutch: 1, team: 0, util: 1 } },
-      { text: 'HE 先消血，再闪进', scores: { aggr: 1, role: 2, eco: 0, clutch: 0, team: 1, util: 2 } },
-      { text: '没有固定顺序，看当时情况临时决定', scores: { aggr: 1, role: 1, eco: 0, clutch: 2, team: 0, util: 0 } },
+      { text: '娱乐归娱乐，但我真不喜欢输，能赢一定要赢', scores: S(1, 0, 1, 0, 2, 3, 0, 1, 1) },
+      { text: '最好赢，输了会不爽，但还能保持理性', scores: S(0, 0, 0, 0, 1, 1, 1, 1, 0) },
+      { text: '输赢都行，只要这把内容打得值就可以', scores: S(0, 0, 0, 1, 0, -1, 1, 0, -1) },
+      { text: '纯玩，输赢真的不会太影响我心情', scores: S(-1, 0, -1, 0, -1, -3, -1, -1, -1) },
     ],
   },
-
   {
-    id: 'util_2', dimLabel: '💣 道具使用',
-    text: '你的烟雾弹不够完全封住 Inferno 香蕉路，你会？',
+    id: 'win_2', dimLabel: '🏆 胜负欲',
+    text: '比赛大比分落后时，你的内心更像哪种状态？',
     options: [
-      { text: '叫队友补一颗，配合一起扔', scores: { aggr: -1, role: 2, eco: 0, clutch: 0, team: 3, util: 2 } },
-      { text: '扔了再说，能封多少封多少', scores: { aggr: 1, role: 1, eco: 0, clutch: 1, team: 0, util: 1 } },
-      { text: '改打 B 侧，不强行走香蕉', scores: { aggr: -1, role: 3, eco: 0, clutch: 0, team: 1, util: 0 } },
-      { text: '用闪光代替，逼 CT 缩进去再打', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 1, util: 2 } },
+      { text: '越落后越想翻，脑子里只剩“这局必须咬回来”', scores: S(1, 0, 0, 0, 2, 3, 0, 0, 2) },
+      { text: '会更认真，但尽量不让情绪压过判断', scores: S(0, 0, 1, 0, 1, 1, 1, 2, 0) },
+      { text: '会告诉自己放平，把这局当练内容来打', scores: S(0, 0, 0, 1, 0, -1, 1, 1, -1) },
+      { text: '落后太多我容易松掉，胜负感会快速下降', scores: S(-1, 0, -1, 0, -1, -3, -2, -1, -1) },
     ],
   },
-
   {
-    id: 'util_3', dimLabel: '💣 道具使用',
-    text: '你有一颗燃烧瓶，T 攻 Dust2 B 包，最优先的用法是？',
+    id: 'win_3', dimLabel: '🏆 胜负欲',
+    text: '你刚输掉一个本来能赢的残局，下一局你的心理更像？',
     options: [
-      { text: '扔进 B 包内，逼 CT 出角，配合突破手进场', scores: { aggr: 0, role: 3, eco: 0, clutch: 0, team: 3, util: 3 } },
-      { text: '留着 CT 守角用，反击时更有价值', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 1, util: 2 } },
-      { text: '扔 B 门口，阻断 CT 出来绕背', scores: { aggr: 0, role: 3, eco: 0, clutch: 1, team: 2, util: 3 } },
-      { text: '不扔，留到残局或 1vN 更值', scores: { aggr: -1, role: 1, eco: 2, clutch: 2, team: 0, util: 1 } },
+      { text: '必须马上找回来，不然这口气很难咽下去', scores: S(1, 0, 0, 0, 2, 3, -1, 0, 2) },
+      { text: '会记住这分，但尽量把情绪转成专注', scores: S(0, 0, 1, 0, 1, 1, 1, 1, 0) },
+      { text: '复盘一下失误就行，不会一直被这分吊着', scores: S(0, 0, 1, 1, 0, -1, 2, 2, -1) },
+      { text: '很快翻篇，下一局赢不赢也没那么重要了', scores: S(-1, 0, -1, 0, -1, -3, 0, -1, -1) },
     ],
   },
-
   {
-    id: 'util_4', dimLabel: '💣 道具使用',
-    text: '你确定对面藏在 Nuke 下场的夹角里，但看不见，你会？',
+    id: 'win_4', dimLabel: '🏆 胜负欲',
+    text: '队友说“这把随便玩吧”，你第一反应通常是？',
     options: [
-      { text: '扔燃烧瓶把他逼出来', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 1, util: 3 } },
-      { text: '直接冲进去枪打，快进快出', scores: { aggr: 3, role: 1, eco: -1, clutch: 2, team: 0, util: -1 } },
-      { text: '叫队友扔闪光配合，双人清点', scores: { aggr: 0, role: 2, eco: 0, clutch: 0, team: 3, util: 2 } },
-      { text: '佯攻另一侧，等他主动出来', scores: { aggr: 0, role: 3, eco: 0, clutch: 2, team: 1, util: 0 } },
-    ],
-  },
-
-  {
-    id: 'util_5', dimLabel: '💣 道具使用',
-    text: '你对自己的道具水平评价是？',
-    options: [
-      { text: '很熟，我专门练过各图的烟，每个包点都扔得到', scores: { aggr: -1, role: 2, eco: 1, clutch: 0, team: 2, util: 3 } },
-      { text: '一般，基础的会，复杂的线路不深究', scores: { aggr: 0, role: 1, eco: 0, clutch: 0, team: 1, util: 1 } },
-      { text: '比较薄弱，我更依赖枪法和反应', scores: { aggr: 2, role: 1, eco: 0, clutch: 1, team: -1, util: -2 } },
-      { text: '在学，知道道具很重要，但还没系统练', scores: { aggr: 0, role: 1, eco: 0, clutch: 0, team: 1, util: 1 } },
+      { text: '不行，我不太接受“随便玩”这三个字', scores: S(1, 0, 1, 0, 1, 3, 0, 2, 1) },
+      { text: '可以轻松点，但该赢还是得想办法赢', scores: S(0, 0, 0, 0, 1, 1, 1, 1, 0) },
+      { text: '如果气氛轻松我也能接受，没必要一直绷太紧', scores: S(0, 0, 0, 1, 0, -1, 1, 0, -1) },
+      { text: '我反而喜欢这种感觉，输了也完全不难受', scores: S(-1, 0, -1, 0, -1, -3, -1, -1, 0) },
     ],
   },
 
   // ══════════════════════════════════════
-  //  维度7：整活维度（5题）
+  //  性格维度2：抗压性（4题）
   // ══════════════════════════════════════
 
   {
-    id: 'meme_1', dimLabel: '🤡 整活维度',
-    text: '地上有一把“永恒大狙”，你手里是 AK，队友还说“别捡，会掉节奏”。你会？',
+    id: 'nerve_1', dimLabel: '🧱 抗压性',
+    text: '你连续三局失误后，最真实的状态更像？',
     options: [
-      { text: '捡，哪怕这局不会用，也得先开一枪过把瘾', scores: { aggr: 1, role: 0, eco: -1, clutch: 0, team: -1, util: 0, meme: 3 } },
-      { text: '先问队友谁更会用，没人要我再拿起来整一把', scores: { aggr: 0, role: 1, eco: 1, clutch: 0, team: 2, util: 0, meme: 1 } },
-      { text: '不捡，枪在地上再帅，也没有当前站位重要', scores: { aggr: -1, role: 2, eco: 2, clutch: 1, team: 1, util: 0, meme: -2 } },
-      { text: '看比分，领先很多就捡着玩，关键局绝对不碰', scores: { aggr: 0, role: 1, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+      { text: '还能稳住，先把节奏收回来，手感会回来的', scores: S(0, 0, 1, 0, 1, 1, 3, 2, -1) },
+      { text: '会有点在意，但不至于明显变形', scores: S(0, 0, 0, 0, 1, 1, 1, 1, 0) },
+      { text: '会开始怀疑自己，动作和决策都变得犹豫', scores: S(0, 0, -1, 0, -1, 0, -1, 0, -1) },
+      { text: '很容易崩，后面几局基本都会被情绪带走', scores: S(0, 0, -1, -1, -2, -1, -3, -2, -2) },
+    ],
+  },
+  {
+    id: 'nerve_2', dimLabel: '🧱 抗压性',
+    text: '决胜局最后两分时，你更像哪种人？',
+    options: [
+      { text: '这种局面对我反而是加成，越关键越能静下来', scores: S(0, 0, 1, 0, 2, 2, 3, 2, 0) },
+      { text: '会紧张，但还能把该做的东西做完整', scores: S(0, 0, 0, 0, 1, 1, 1, 1, 0) },
+      { text: '手会开始硬，打法会比平时更保守', scores: S(-1, 0, 0, 0, -1, 0, -1, 1, -2) },
+      { text: '会明显慌，脑子里总怕自己成为背锅的人', scores: S(0, 0, -1, -1, -2, -1, -3, -1, -2) },
+    ],
+  },
+  {
+    id: 'nerve_3', dimLabel: '🧱 抗压性',
+    text: '队友语音里一炸锅时，你一般会怎么样？',
+    options: [
+      { text: '我会先把自己稳住，外面再吵也不影响判断', scores: S(0, 0, 1, 0, 1, 1, 3, 2, -1) },
+      { text: '多少会受影响，但还能继续正常沟通', scores: S(0, 0, 0, 0, 0, 1, 1, 1, 0) },
+      { text: '会开始烦躁，注意力很难完全留在局里', scores: S(0, 0, -1, 0, -1, 0, -1, -1, 1) },
+      { text: '一旦气氛炸了，我连操作都会跟着变形', scores: S(0, 0, -1, -1, -2, -1, -3, -2, -1) },
+    ],
+  },
+  {
+    id: 'nerve_4', dimLabel: '🧱 抗压性',
+    text: '残局 1v2 还剩十几秒，你对自己的第一感受更像？',
+    options: [
+      { text: '先算时间和路线，这种局我反而会特别清醒', scores: S(0, 0, 1, 0, 1, 1, 3, 3, -1) },
+      { text: '会紧，但还能把思路勉强维持住', scores: S(0, 0, 0, 0, 1, 1, 1, 1, 0) },
+      { text: '会有明显压力，最后一步经常容易犹豫', scores: S(0, 0, -1, 0, -1, 0, -1, 0, -1) },
+      { text: '大脑基本一片响，不是慢半拍就是太着急', scores: S(0, 0, -1, -1, -2, -1, -3, -2, -2) },
     ],
   },
 
+  // ══════════════════════════════════════
+  //  性格维度3：纪律性（4题）
+  // ══════════════════════════════════════
+
   {
-    id: 'meme_2', dimLabel: '🤡 整活维度',
-    text: '热身时你在 Mirage 中路连了两个穿烟爆头，队友起哄“正赛也这样打”。你会？',
+    id: 'discipline_1', dimLabel: '📐 纪律性',
+    text: 'IGL 的 call 和你的读图感觉相反时，你通常会？',
     options: [
-      { text: '下局直接来一把同路线复刻，节目效果拉满', scores: { aggr: 2, role: 1, eco: -1, clutch: 1, team: 0, util: 0, meme: 3 } },
-      { text: '嘴上说行，开局还是先按战术默认', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 2, util: 0, meme: -1 } },
-      { text: '让队友先给道具配合，真能成再整', scores: { aggr: 0, role: 2, eco: 0, clutch: 1, team: 2, util: 2, meme: 1 } },
-      { text: '先观察对面有没有防备，没机会就不硬演', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+      { text: '先执行，除非有绝对关键信息，否则不擅自改计划', scores: S(-1, 0, 1, 0, 0, 0, 1, 3, -1) },
+      { text: '我会给出判断，但最终还是按统一口令走', scores: S(0, 0, 1, 0, 0, 1, 1, 2, 0) },
+      { text: '如果我很确定，就会自己改路线试一把', scores: S(1, 0, -1, 1, 1, 1, 0, -1, 1) },
+      { text: '我更相信自己的感觉，经常先动了再说', scores: S(2, 0, -2, 0, 1, 0, -1, -3, 2) },
+    ],
+  },
+  {
+    id: 'discipline_2', dimLabel: '📐 纪律性',
+    text: '半起局队里说好统一资源，但你其实够起一把不错的枪。你会？',
+    options: [
+      { text: '不单起，统一比个人舒服更重要', scores: S(-1, 0, 1, 0, 0, 0, 1, 3, -1) },
+      { text: '先问一句，如果队里同意我才会买', scores: S(0, 0, 1, 0, 0, 1, 1, 2, 0) },
+      { text: '我会买，只要我觉得这把自己能打出价值', scores: S(1, 0, -1, 0, 1, 1, 0, -1, 1) },
+      { text: '基本不会问，能起就起，打赢了就是对的', scores: S(2, 0, -2, 0, 1, 1, -1, -3, 2) },
+    ],
+  },
+  {
+    id: 'discipline_3', dimLabel: '📐 纪律性',
+    text: '一套默认打到一半机会一般，但原计划还没完全结束时，你更像？',
+    options: [
+      { text: '继续按结构走完，除非出现明确信号才改', scores: S(-1, 0, 1, 0, 0, 0, 1, 3, -1) },
+      { text: '会沟通一下，看是不是全队一起调整', scores: S(0, 0, 1, 0, 0, 1, 1, 2, 0) },
+      { text: '我会先根据自己这边的信息做一点主动变化', scores: S(1, 0, 0, 1, 1, 1, 0, -1, 1) },
+      { text: '拖着结构没意义，我通常会自己先找新机会', scores: S(1, 0, -2, 1, 1, 0, -1, -3, 2) },
+    ],
+  },
+  {
+    id: 'discipline_4', dimLabel: '📐 纪律性',
+    text: '你怎么理解“打得舒服”和“打得对”之间的关系？',
+    options: [
+      { text: '打得对永远优先，个人舒服要让位给团队结构', scores: S(-1, 0, 2, 0, 0, 0, 1, 3, -1) },
+      { text: '大部分时候先打对，偶尔也要照顾个人状态', scores: S(0, 0, 1, 0, 0, 1, 1, 2, 0) },
+      { text: '如果不舒服就很难打好，所以我会优先调成自己顺手', scores: S(1, 0, -1, 0, 1, 1, 0, -1, 0) },
+      { text: '我更信自己的节奏，体系不该卡住我发挥', scores: S(1, 0, -2, 0, 2, 1, -1, -3, 1) },
     ],
   },
 
-  {
-    id: 'meme_3', dimLabel: '🤡 整活维度',
-    text: 'Eco 局队友突然提议“五把 Tec-9 一起冲烟刀一个”，你第一反应是？',
-    options: [
-      { text: '冲，eco 局不整活那什么时候整', scores: { aggr: 3, role: 0, eco: -2, clutch: 1, team: 1, util: 0, meme: 3 } },
-      { text: '可以整，但我得先丢颗闪，不然像白给', scores: { aggr: 1, role: 2, eco: -1, clutch: 0, team: 2, util: 2, meme: 1 } },
-      { text: '别闹，eco 局能换枪就已经很赚了', scores: { aggr: -2, role: 2, eco: 3, clutch: 1, team: 1, util: 0, meme: -2 } },
-      { text: '如果比分大优我陪你们玩，胶着局别搞', scores: { aggr: 0, role: 1, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
-    ],
-  },
+  // ══════════════════════════════════════
+  //  性格维度4：激进度（4题）
+  // ══════════════════════════════════════
 
   {
-    id: 'meme_4', dimLabel: '🤡 整活维度',
-    text: '你在 Nuke CT 外场拿着鸟狙，对面刚暂停回来。你会怎么站？',
+    id: 'aggr_1', dimLabel: '⚔️ 激进度',
+    text: 'CT 方守点时，如果对面连续几局都没来，你更容易怎么做？',
     options: [
-      { text: '前顶红箱，打一个就是本局集锦', scores: { aggr: 2, role: 1, eco: -1, clutch: 2, team: 0, util: 0, meme: 3 } },
-      { text: '正常守默认点，鸟狙也要当正经枪用', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 1, util: 0, meme: -2 } },
-      { text: '让队友补颗闪，我去找个非常规角度偷一个', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 2, util: 2, meme: 1 } },
-      { text: '看对面上一局外场节奏，真有空档再换位整活', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+      { text: '主动反清找信息，不想继续原地等', scores: S(2, 0, -1, 0, 1, 1, 0, -2, 3) },
+      { text: '会试着前顶一点，但保留退路和补枪距离', scores: S(1, 0, 0, 0, 1, 1, 1, 0, 1) },
+      { text: '还是以稳守为主，没必要自己送节奏', scores: S(-1, 0, 1, 0, 0, 0, 1, 2, -1) },
+      { text: '绝不乱动，宁可信息少也不愿意把位置送掉', scores: S(-2, 0, 1, 0, -1, -1, 1, 2, -3) },
     ],
   },
-
   {
-    id: 'meme_5', dimLabel: '🤡 整活维度',
-    text: '你刚打出一个穿烟爆头，语音里全在刷“这也行？”。下一局你会？',
+    id: 'aggr_2', dimLabel: '⚔️ 激进度',
+    text: 'T 方默认一分多钟没打开局面时，你第一反应更像？',
     options: [
-      { text: '乘胜追击，再找一个更离谱的 timing', scores: { aggr: 2, role: 1, eco: -1, clutch: 1, team: 0, util: 0, meme: 3 } },
-      { text: '收一收，刚才那球是高光，不是常规打法', scores: { aggr: -1, role: 2, eco: 1, clutch: 2, team: 1, util: 0, meme: -1 } },
-      { text: '提醒队友别上头，先把信息和默认做好', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 3, util: 0, meme: -2 } },
-      { text: '可以继续找非常规机会，但前提是先沟通', scores: { aggr: 0, role: 3, eco: 0, clutch: 2, team: 2, util: 0, meme: 1 } },
+      { text: '提速强撞，拖越久越容易被读死', scores: S(2, 0, -1, 0, 1, 1, 0, -2, 3) },
+      { text: '找个小窗口提一波速，把节奏主动抓回来', scores: S(1, 0, 0, 0, 1, 1, 1, 0, 1) },
+      { text: '继续磨信息，能不赌就尽量不赌', scores: S(-1, 0, 1, 1, 0, 0, 1, 2, -1) },
+      { text: '我更倾向打满时间，把所有风险压到最低', scores: S(-2, 0, 1, 0, -1, -1, 1, 3, -3) },
+    ],
+  },
+  {
+    id: 'aggr_3', dimLabel: '⚔️ 激进度',
+    text: '你领先时的比赛风格通常会怎么变化？',
+    options: [
+      { text: '会更敢做动作，优势就该继续压着打', scores: S(2, 0, -1, 0, 1, 1, 0, -2, 3) },
+      { text: '会适度增加主动性，但不会离谱上头', scores: S(1, 0, 0, 0, 1, 1, 1, 0, 1) },
+      { text: '还是按原本节奏打，领先不代表该乱冲', scores: S(-1, 0, 1, 0, 0, 0, 1, 2, -1) },
+      { text: '我反而会更保守，领先时最怕的就是给机会', scores: S(-2, 0, 1, 0, -1, 0, 1, 3, -3) },
+    ],
+  },
+  {
+    id: 'aggr_4', dimLabel: '⚔️ 激进度',
+    text: '1v1 信息并不完整时，你更像哪种残局处理？',
+    options: [
+      { text: '主动抢先手，让对面来不及把残局变复杂', scores: S(2, 0, -1, 0, 1, 1, 0, -2, 3) },
+      { text: '先做一点假动作，再趁对面犹豫时动手', scores: S(1, 0, 0, 1, 1, 1, 1, 0, 1) },
+      { text: '优先守信息和时间，不急着把主动权交出去', scores: S(-1, 0, 1, 0, 0, 0, 2, 2, -1) },
+      { text: '能不先动就不先动，我宁可等到更确定再打', scores: S(-2, 0, 1, 0, -1, -1, 2, 3, -3) },
     ],
   },
 

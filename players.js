@@ -1,374 +1,277 @@
 // ═══════════════════════════════════════════════════════════
 //  players.js  —  CS2 DNA 选手档案库
 //  数据来源：HLTV 2025年度 Top 20 选手榜单
-//  角色体系：突破手 / 道具手 / 自由人 / IGL / 主狙
+//
+//  维度结构：
+//  - 位置维度：突破手 / 狙击手 / 指挥 / 自由人 / 大哥位
+//  - 性格维度：胜负欲 / 抗压性 / 纪律性 / 激进度
 //
 //  ⚠️  如需修改选手数据，直接编辑此文件即可。
-//  每位选手字段说明：
-//    ign         : 游戏ID
-//    team        : 所属战队
-//    nationality : 国籍（带 emoji 旗帜）
-//    role        : 内部角色标识（entry/support/lurker/igl/awp/star）
-//    role_label  : 显示用角色名
-//    color       : 选手代表色（HEX）
-//    tagline     : 一句话人格标签
-//    tags        : 标签数组（显示在结果页）
-//    desc        : 结果页详细描述（100~120字）
-//    scores      : 七维度分值（0~100）
-//      aggr   进攻侵略性
-//      role   角色执行力
-//      eco    经济纪律
-//      clutch 残局心理
-//      team   团队意识
-//      util   道具使用
-//      meme   整活指数
 // ═══════════════════════════════════════════════════════════
 
 const DIMENSIONS = [
-  { id: 'aggr',   name: '侵略性',   icon: '⚔️' },
-  { id: 'role',   name: '角色执行', icon: '🎯' },
-  { id: 'eco',    name: '经济纪律', icon: '💰' },
-  { id: 'clutch', name: '残局心理', icon: '🧠' },
-  { id: 'team',   name: '团队意识', icon: '🤝' },
-  { id: 'util',   name: '道具使用', icon: '💣' },
-  { id: 'meme',   name: '整活指数', icon: '🤡' },
+  { id: 'entry',      name: '突破手', icon: '💥' },
+  { id: 'awp',        name: '狙击手', icon: '🎯' },
+  { id: 'igl',        name: '指挥',   icon: '📣' },
+  { id: 'lurker',     name: '自由人', icon: '🕶️' },
+  { id: 'star',       name: '大哥位', icon: '👑' },
+  { id: 'win',        name: '胜负欲', icon: '🏆' },
+  { id: 'nerve',      name: '抗压性', icon: '🧱' },
+  { id: 'discipline', name: '纪律性', icon: '📐' },
+  { id: 'aggr',       name: '激进度', icon: '⚔️' },
 ];
 
 const PLAYERS = [
 
-  // ───────────────────────────────────────
-  //  #1  ZywOo — Vitality — 主狙
-  // ───────────────────────────────────────
   {
     ign: 'ZywOo',
     team: 'Vitality', nationality: '🇫🇷 法国',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#f7c600',
-    tagline: '四届年度最佳，AWP界的天花板',
-    tags: ['主狙', '稳定输出', '节奏掌控'],
-    desc: '你端起AWP不靠冲动靠计算。Mirage A大一个定点守，Inferno B小一个slow peek，对面永远不知道你下一步在哪。低调但致命，从不多说一句话，但AWP的枪声就是你的回答。',
-    scores: { aggr: 50, role: 96, eco: 72, clutch: 94, team: 68, util: 58, meme: 42 },
+    tagline: '全能型主狙，关键分永远有人能站出来',
+    tags: ['狙击手', '大场面', '稳定终结'],
+    desc: '你不是那种靠情绪推着自己打的人，而是越到关键局越显得冷静。枪法、站位、节奏感都很完整，既能控长线也能在残局里自己把局收掉。你像那种全队最放心把关键分交给的人。',
+    scores: { entry: 28, awp: 97, igl: 32, lurker: 38, star: 88, win: 90, nerve: 97, discipline: 86, aggr: 42 },
   },
-
-  // ───────────────────────────────────────
-  //  #2  donk — Spirit — 突破手/核心
-  // ───────────────────────────────────────
   {
     ign: 'donk',
     team: 'Spirit', nationality: '🇷🇺 俄罗斯',
     role: 'entry', role_label: '突破手',
     color: '#08979c',
-    tagline: '2024年世界第一，但他才20岁',
-    tags: ['突破手', '天才型', 'Rating怪'],
-    desc: '你打CS靠的是本能加天赋。进A包不考虑线路，感觉对了就进；角度该不该抢，直觉说抢就抢。这种打法在别人身上叫莽，在你身上叫天赋。Inferno、Nuke、Ancient，到哪都是最高分那个。',
-    scores: { aggr: 90, role: 82, eco: 54, clutch: 94, team: 64, util: 58, meme: 88 },
+    tagline: '怪物级锋线核心，打得像把地图直接撕开',
+    tags: ['突破手', '大哥位', '高压突破'],
+    desc: '你会把最硬的第一波对抗直接变成优势，而且往往不止打一枪。你是那种既能当开路的人，也能靠夸张上限扛起整局输出的核心。越需要有人硬打的时候，你越像最该站出来的那个。',
+    scores: { entry: 98, awp: 20, igl: 18, lurker: 36, star: 95, win: 96, nerve: 92, discipline: 62, aggr: 98 },
   },
-
-  // ───────────────────────────────────────
-  //  #3  ropz — Vitality — 自由人
-  // ───────────────────────────────────────
   {
     ign: 'ropz',
     team: 'Vitality', nationality: '🇪🇪 爱沙尼亚',
     role: 'lurker', role_label: '自由人',
     color: '#389e0d',
-    tagline: '最安静的那把刀，插在最疼的地方',
-    tags: ['自由人', '信息收割', '克制精准'],
-    desc: '你从不急着亮出自己。Nuke B侧一个绕后、Dust2中路一个插刀，队友还在正面对枪的时候你已经到了对面背后。保枪意识极强，死亡换死亡的买卖你不做。',
-    scores: { aggr: 46, role: 88, eco: 88, clutch: 90, team: 74, util: 70, meme: 20 },
+    tagline: '最克制的边线猎手，慢慢把局切开',
+    tags: ['自由人', '纪律', '高智商'],
+    desc: '你很少让自己陷入低收益对枪，更喜欢靠 timing、控图和信息差把回合一点点做出来。你不是最吵的人，但通常是最难被抓失误的人。你适合在看似平静的回合里，慢慢把对面掏空。',
+    scores: { entry: 20, awp: 22, igl: 44, lurker: 97, star: 72, win: 85, nerve: 92, discipline: 96, aggr: 18 },
   },
-
-  // ───────────────────────────────────────
-  //  #4  m0NESY — Falcons — 主狙
-  // ───────────────────────────────────────
   {
     ign: 'm0NESY',
     team: 'Falcons', nationality: '🇷🇺 俄罗斯',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#eb2f96',
-    tagline: '最激进的AWP，进攻型狙手天花板',
-    tags: ['主狙', '激进AWP', '进攻型'],
-    desc: '你的AWP不是用来守角的，是用来进攻的。Nuke A侧硬推进，Mirage mid一个aggressive peek，你把AWP打出了突破手的感觉。对面以为你会守，结果你已经在他们脸上了。',
-    scores: { aggr: 82, role: 91, eco: 60, clutch: 88, team: 64, util: 54, meme: 92 },
+    tagline: '进攻型狙击手，敢把高风险变成高收益',
+    tags: ['狙击手', '高光型', '激进'],
+    desc: '你拿狙不是为了站桩，而是为了主动把地图撕开。你喜欢把原本不该由狙击手承担的节奏也扛起来，既能先手拿人也能自己带着队伍往前走。你像那种看起来很冒险，但又总能把风险打穿的人。',
+    scores: { entry: 58, awp: 98, igl: 26, lurker: 34, star: 92, win: 92, nerve: 89, discipline: 58, aggr: 95 },
   },
-
-  // ───────────────────────────────────────
-  //  #5  sh1ro — Spirit — 主狙
-  // ───────────────────────────────────────
   {
     ign: 'sh1ro',
     team: 'Spirit', nationality: '🇷🇺 俄罗斯',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#531dab',
-    tagline: '枪声是他最多的表达',
-    tags: ['主狙', '克制型', '锚点稳定'],
-    desc: '你守点的时候可以一局一句话不说，但那把AWP会替你说话。Overpass A斜坡一个卡角，Mirage B侧大窗一个压制，不主动找对面，但谁进来谁死。稳定得像一座墙。',
-    scores: { aggr: 40, role: 94, eco: 74, clutch: 90, team: 70, util: 62, meme: 18 },
+    tagline: '冷静型主狙，用最小波动打最大价值',
+    tags: ['狙击手', '冷静', '稳健'],
+    desc: '你更像那种把每个站位和每次 peek 都算得很清楚的人。比起热血和高光，你更信赖稳定、纪律和长期回合价值。你的优势不在于吓人，而在于让对面一整场都找不到舒服的方式处理你。',
+    scores: { entry: 14, awp: 96, igl: 36, lurker: 42, star: 78, win: 86, nerve: 95, discipline: 93, aggr: 16 },
   },
-
-  // ───────────────────────────────────────
-  //  #6  molodoy — FURIA — 主狙（新秀）
-  // ───────────────────────────────────────
   {
     ign: 'molodoy',
     team: 'FURIA', nationality: '🇰🇿 哈萨克斯坦',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#1677ff',
-    tagline: '2025年度最佳新秀，AWP界的新星',
-    tags: ['主狙', '新秀王', '上升型'],
-    desc: '你还在证明自己，但已经证明得很好。没有前辈的包袱，打起AWP来反而更自由，该守的时候守，该冲的时候比老将更敢冲。FURIA的进攻体系让你如鱼得水。',
-    scores: { aggr: 66, role: 84, eco: 65, clutch: 80, team: 72, util: 60, meme: 70 },
+    tagline: '新秀狙手，风格还在生长但锐气很足',
+    tags: ['狙击手', '新秀', '上升期'],
+    desc: '你身上有明显的年轻感：敢做动作，也愿意在关键枪位上扛责任。整体框架还没有完全定型，但已经能看出你既想当狙击手，又不满足只当工具人。你是那种越打越容易长成核心的类型。',
+    scores: { entry: 36, awp: 90, igl: 24, lurker: 30, star: 80, win: 84, nerve: 80, discipline: 63, aggr: 74 },
   },
-
-  // ───────────────────────────────────────
-  //  #7  flameZ — Vitality — 突破手
-  // ───────────────────────────────────────
   {
     ign: 'flameZ',
     team: 'Vitality', nationality: '🇮🇱 以色列',
     role: 'entry', role_label: '突破手',
     color: '#d46b08',
-    tagline: '以色列突破手，冲进去是一种艺术',
-    tags: ['突破手', '进攻执行', '爆发力强'],
-    desc: '你是队里第一个进A大的人，也是死得最快的那个——但你换来的信息让队友赢了这局。Inferno A大跳坑，Ancient A包点强冲，你不需要完美的线路，只需要比对面快0.3秒。',
-    scores: { aggr: 86, role: 88, eco: 52, clutch: 72, team: 74, util: 60, meme: 78 },
+    tagline: '高质量先手点火位，专门负责撞开第一层',
+    tags: ['突破手', '提速', '前压'],
+    desc: '你很适合承担最难受的第一拍，因为你不怕成为回合里最先承担风险的人。你能吃闪、能换枪、也能把包点压力直接拉满。你不是那种慢慢磨出机会的人，而是用行动逼机会自己出现。',
+    scores: { entry: 94, awp: 10, igl: 20, lurker: 32, star: 74, win: 86, nerve: 78, discipline: 70, aggr: 92 },
   },
-
-  // ───────────────────────────────────────
-  //  #8  frozen — FaZe — 自由人
-  // ───────────────────────────────────────
   {
     ign: 'frozen',
     team: 'FaZe', nationality: '🇸🇰 斯洛伐克',
     role: 'lurker', role_label: '自由人',
     color: '#40a9ff',
-    tagline: '表情和走路一样平静，但输出从没掉线',
-    tags: ['自由人', '枪法型', '冷静克制'],
-    desc: '你拿起枪的时候脸上看不出任何情绪，但输出一直在线。Mirage中路1v1，Ancient A侧1v2，你用纯枪法解决了战术解决不了的问题。不冲不稳，刚刚好的那种自由人。',
-    scores: { aggr: 64, role: 84, eco: 74, clutch: 90, team: 72, util: 62, meme: 30 },
+    tagline: '低噪音高输出，哪里都能站得住',
+    tags: ['自由人', '全能', '稳定输出'],
+    desc: '你有很强的自主作战能力，而且不需要太多资源就能把自己的回合打完整。你像那种可以游走、能补残局，也能在团队需要时接手正面输出的人。风格不夸张，但很难失衡。',
+    scores: { entry: 42, awp: 18, igl: 34, lurker: 87, star: 84, win: 84, nerve: 90, discipline: 88, aggr: 46 },
   },
-
-  // ───────────────────────────────────────
-  //  #9  KSCERATO — FURIA — 自由人
-  // ───────────────────────────────────────
   {
     ign: 'KSCERATO',
     team: 'FURIA', nationality: '🇧🇷 巴西',
     role: 'lurker', role_label: '自由人',
     color: '#13c2c2',
-    tagline: '巴西式自由人：激进但有脑子',
-    tags: ['自由人', '巴西风格', '侵略性lurk'],
-    desc: '你不走寻常路，但每条路都走得很硬。Nuke外围的绕背，Train B侧的反A，你的游走带着巴西人特有的侵略性——不是躲着走，是主动找打。对面永远不知道你从哪冒出来。',
-    scores: { aggr: 76, role: 84, eco: 64, clutch: 86, team: 70, util: 66, meme: 74 },
+    tagline: '带侵略性的自由人，边线和正面都能咬人',
+    tags: ['自由人', '高压', '个人能力'],
+    desc: '你不是传统意义上极度保守的自由人，你更像那种可以在边线偷到机会，也可以直接把一整侧防线咬碎的人。你对个人操作和局部 timing 很有信心，回合的天花板通常也不低。',
+    scores: { entry: 56, awp: 14, igl: 24, lurker: 92, star: 86, win: 88, nerve: 86, discipline: 72, aggr: 76 },
   },
-
-  // ───────────────────────────────────────
-  //  #10  Spinx — MOUZ — 突破手/核心
-  // ───────────────────────────────────────
   {
     ign: 'Spinx',
     team: 'MOUZ', nationality: '🇮🇱 以色列',
     role: 'entry', role_label: '突破手',
     color: '#cf1322',
-    tagline: 'MOUZ攻坚的第一把刀',
-    tags: ['突破手', '高爆发', '进攻核心'],
-    desc: '你是那种打突破手打出享受感的人。进A包不犹豫，一颗闪光进去，对面闪好了你已经清了两个角。Inferno A大、Ancient B侧，你的进场路线干净利落，进去就不回头。',
-    scores: { aggr: 85, role: 86, eco: 56, clutch: 76, team: 70, util: 62, meme: 68 },
+    tagline: '正面攻坚的节奏点，打硬仗不怕吃第一枪',
+    tags: ['突破手', '核心火力', '进攻节奏'],
+    desc: '你喜欢让回合尽早进入高强度对抗，而且很适合在第一波和第二波之间持续给压力。你既能承担最难受的进点，也能在资源倾斜时继续放大个人输出。是那种典型能把进攻回合带热的人。',
+    scores: { entry: 92, awp: 12, igl: 22, lurker: 30, star: 84, win: 89, nerve: 82, discipline: 68, aggr: 86 },
   },
-
-  // ───────────────────────────────────────
-  //  #11  Twistzz — FaZe — 自由人
-  // ───────────────────────────────────────
   {
     ign: 'Twistzz',
     team: 'FaZe', nationality: '🇨🇦 加拿大',
     role: 'lurker', role_label: '自由人',
     color: '#0050b3',
-    tagline: '最优雅的游走，慢动作里的一把刀',
-    tags: ['自由人', '优雅打法', '关键时刻型'],
-    desc: '你的游走从不慌张——绕到位了再动，时机到了再出。Ancient B侧一个反包，Inferno上T道一个切入，你像一把慢动作的刀，但刺进去就是致命的。节奏感是你最大的武器。',
-    scores: { aggr: 54, role: 86, eco: 80, clutch: 86, team: 76, util: 68, meme: 38 },
+    tagline: '优雅型终结者，回合越细越能体现价值',
+    tags: ['自由人', '大哥位', '细腻'],
+    desc: '你很擅长在别人看不见的细节里建立优势。不是靠疯狂前压，而是靠站位、准心、timing 和回合理解慢慢把对面处理掉。你既有自由人的细腻，也有关键位终结比赛的能力。',
+    scores: { entry: 30, awp: 18, igl: 28, lurker: 89, star: 86, win: 82, nerve: 88, discipline: 90, aggr: 34 },
   },
-
-  // ───────────────────────────────────────
-  //  #12  mezii — Vitality — 道具手
-  // ───────────────────────────────────────
   {
     ign: 'mezii',
     team: 'Vitality', nationality: '🇬🇧 英国',
-    role: 'support', role_label: '道具手',
+    role: 'support', role_label: '指挥',
     color: '#096dd9',
-    tagline: '年度最佳锚点，每颗烟都是为别人开的路',
-    tags: ['道具手', '锚点', '默默贡献'],
-    desc: '你的烟雾弹扔得比谁都准，闪光弹打得比谁都有节奏感。Mirage A包的双烟、Inferno中路的cut烟，你默默做好该做的每件事。KDA不高，但少了你队伍根本转不起来。',
-    scores: { aggr: 38, role: 82, eco: 82, clutch: 62, team: 96, util: 96, meme: 22 },
+    tagline: '体系型拼图选手，纪律和团队感都很满',
+    tags: ['纪律', '团队', '体系适配'],
+    desc: '你不是那种一定要吃最高资源才能打出价值的人，反而更擅长把整支队伍的结构衔接得更顺。你的优点是稳定、执行和愿意做脏活累活。如果一个队想打得更完整，你会是很好用的那块拼图。',
+    scores: { entry: 18, awp: 10, igl: 62, lurker: 26, star: 36, win: 80, nerve: 72, discipline: 96, aggr: 14 },
   },
-
-  // ───────────────────────────────────────
-  //  #13  Senzu — The MongolZ — 突破手
-  // ───────────────────────────────────────
   {
     ign: 'Senzu',
     team: 'The MongolZ', nationality: '🇲🇳 蒙古',
     role: 'entry', role_label: '突破手',
     color: '#7cb305',
-    tagline: '蒙古铁骑的先锋，快攻体系的刀刃',
-    tags: ['突破手', '快攻型', '亚洲速度'],
-    desc: '你打的是速度和节奏。MongolZ的快攻体系里你是第一个进包点的人，Mirage B一套秒进，Dust2 A侧一个闪冲，对面的信息永远落后你半秒——那半秒就够了。',
-    scores: { aggr: 88, role: 84, eco: 58, clutch: 74, team: 76, util: 64, meme: 76 },
+    tagline: '快节奏锋线，喜欢把局面一下子打热',
+    tags: ['突破手', '快攻', '锐气'],
+    desc: '你像那种很适合在快节奏体系里发光的人，第一拍冲得快，第二拍也不容易掉。你能把对面的防守线直接推得很乱，而且愿意让自己始终站在最先碰撞的位置上。',
+    scores: { entry: 93, awp: 8, igl: 16, lurker: 28, star: 76, win: 87, nerve: 76, discipline: 66, aggr: 90 },
   },
-
-  // ───────────────────────────────────────
-  //  #14  XANTARES — Aurora — 突破手
-  // ───────────────────────────────────────
   {
     ign: 'XANTARES',
     team: 'Aurora', nationality: '🇹🇷 土耳其',
     role: 'entry', role_label: '突破手',
     color: '#fa8c16',
-    tagline: '土耳其冲击波，手速打破一切',
-    tags: ['突破手', '爆发型', '极速手枪'],
-    desc: '你的手速是天赋，进攻节奏是练出来的。Inferno A大一个闪进，Dust2 B包点硬推，靠着极短的反应时间把对面所有的预瞄全打乱。停不下来就是你的风格。',
-    scores: { aggr: 94, role: 86, eco: 46, clutch: 76, team: 60, util: 50, meme: 84 },
+    tagline: '爆发型枪男，第一波硬碰硬最有画面',
+    tags: ['突破手', '枪法', '爆发'],
+    desc: '你不是那种要把局拖慢了才能舒服的人，反而是正面对枪越直接越容易打出状态。你的强项就是用极高的个人爆发把防线瞬间打穿，哪怕知道风险高，也还是更相信自己的第一枪。',
+    scores: { entry: 95, awp: 6, igl: 12, lurker: 24, star: 88, win: 90, nerve: 78, discipline: 52, aggr: 97 },
   },
-
-  // ───────────────────────────────────────
-  //  #15  YEKINDAR — FURIA — 突破手
-  // ───────────────────────────────────────
   {
     ign: 'YEKINDAR',
     team: 'FURIA', nationality: '🇱🇻 拉脱维亚',
     role: 'entry', role_label: '突破手',
     color: '#ff4d4f',
-    tagline: '我不是在莽，我是在"战术突破"',
-    tags: ['突破手', '混乱制造者', '最激进'],
-    desc: '你制造的混乱是一种战术，不是失控。Mirage A小一个单冲，Overpass B侧硬进，对面备好了你也冲，没备好你更冲。不按套路出牌是你打破对面节奏最有效的方式。',
-    scores: { aggr: 98, role: 80, eco: 32, clutch: 66, team: 60, util: 44, meme: 96 },
+    tagline: '以主动性著称的先手位，永远想先出拳',
+    tags: ['突破手', '超激进', '制造混乱'],
+    desc: '你最强的地方在于敢于主动把局面推向对抗，而且愿意承担这份高波动。你不太在意自己看起来是不是冒险，更在意能不能抢在对面布置完整之前先出手。你是典型靠主动性撕裂回合的人。',
+    scores: { entry: 97, awp: 8, igl: 16, lurker: 38, star: 80, win: 92, nerve: 70, discipline: 40, aggr: 100 },
   },
-
-  // ───────────────────────────────────────
-  //  #16  xertioN — MOUZ — 道具手/支援
-  // ───────────────────────────────────────
   {
     ign: 'xertioN',
     team: 'MOUZ', nationality: '🇩🇰 丹麦',
-    role: 'support', role_label: '道具手',
+    role: 'support', role_label: '指挥',
     color: '#722ed1',
-    tagline: 'MOUZ道具库的管理员',
-    tags: ['道具手', '支援位', '高配合度'],
-    desc: '你的价值在KDA里看不出来，但赢球的时候少不了你。Overpass香蕉路的封烟、Ancient mid的cut烟，你的道具用在刀刃上，每颗都给队友创造了半秒优势——那就够了。',
-    scores: { aggr: 36, role: 80, eco: 80, clutch: 60, team: 94, util: 94, meme: 26 },
+    tagline: '高配合高执行，体系里很好用的一环',
+    tags: ['团队', '纪律', '支援'],
+    desc: '你身上最明显的特点不是抢戏，而是很少让体系掉链子。你愿意做衔接、补位和资源管理，也能在细节处把团队质量拉高。你的价值往往不只体现在数据上，而是在整队运转感里。',
+    scores: { entry: 20, awp: 10, igl: 58, lurker: 24, star: 34, win: 79, nerve: 70, discipline: 95, aggr: 18 },
   },
-
-  // ───────────────────────────────────────
-  //  #17  torzsi — MOUZ — 主狙
-  // ───────────────────────────────────────
   {
     ign: 'torzsi',
     team: 'MOUZ', nationality: '🇭🇺 匈牙利',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#d4380d',
-    tagline: '每一枪都在告诉你他不紧张',
-    tags: ['主狙', '稳健型', '冷静狙手'],
-    desc: '你端起AWP的时候呼吸是稳的。Mirage A大一个定点守，Ancient B侧一个slow peek，节奏不快但每枪都踩在点上。不轻易主动出击，但主动出击时100%有把握。',
-    scores: { aggr: 54, role: 90, eco: 76, clutch: 86, team: 74, util: 58, meme: 34 },
+    tagline: '稳中带锋的主狙，关键时刻不容易掉线',
+    tags: ['狙击手', '稳定', '关键分'],
+    desc: '你整体给人的感觉是稳，但不是没有杀伤力的那种稳。你更相信节奏、枪线和自己的执行质量，不太喜欢用多余动作博存在感。越到需要定住一口气的时候，越能体现你的价值。',
+    scores: { entry: 18, awp: 92, igl: 30, lurker: 36, star: 74, win: 84, nerve: 88, discipline: 84, aggr: 36 },
   },
-
-  // ───────────────────────────────────────
-  //  #18  NiKo — Falcons — 自由人/核心
-  // ───────────────────────────────────────
   {
     ign: 'NiKo',
     team: 'Falcons', nationality: '🇧🇦 波黑',
-    role: 'star', role_label: '自由人',
+    role: 'star', role_label: '大哥位',
     color: '#722ed1',
-    tagline: '步枪之神，我行我素但每枪都打进去',
-    tags: ['自由人', '个人carry', '步枪神'],
-    desc: '你对自己的枪法有充分的自信，有时候甚至让队友"先等一下，让我来"。Mirage中路一个A冲，Inferno香蕉路一个强进，靠着纯枪法解决了战术解决不了的问题。',
-    scores: { aggr: 78, role: 76, eco: 60, clutch: 92, team: 54, util: 56, meme: 72 },
+    tagline: '极致步枪核心，资源和责任都会自然汇到你身上',
+    tags: ['大哥位', '核心火力', '关键枪'],
+    desc: '你很像典型的大哥位：最难的枪位你能打，最关键的残局你也愿意扛。你不一定每一局都站在最前，但一旦资源、节奏和空间往你身上倾斜，你就能迅速把回合变成自己的表演。',
+    scores: { entry: 50, awp: 8, igl: 18, lurker: 54, star: 99, win: 95, nerve: 94, discipline: 66, aggr: 82 },
   },
-
-  // ───────────────────────────────────────
-  //  #19  iM — NAVI — IGL
-  // ───────────────────────────────────────
   {
     ign: 'iM',
     team: 'Natus Vincere', nationality: '🇺🇦 乌克兰',
-    role: 'igl', role_label: 'IGL',
+    role: 'igl', role_label: '指挥',
     color: '#fadb14',
-    tagline: 'NAVI的新大脑，战术严谨派',
-    tags: ['IGL', '战术体系', '严谨派'],
-    desc: '你脑子里永远有下一步计划：对面rush了怎么接，超时了走哪边，哪个位置该扔烟——全都提前想好了。打法偏稳健，相信战术体系大于个人发挥，是队里的中枢。',
-    scores: { aggr: 40, role: 78, eco: 90, clutch: 76, team: 96, util: 84, meme: 30 },
+    tagline: '团队型中枢，更偏向把全局打顺的人',
+    tags: ['指挥', '纪律', '体系'],
+    desc: '你会自然地先去看全局结构，而不是只盯着自己这一拍的舒适度。你的强项是帮助队伍把回合打清楚、打顺、打得不慌。哪怕不是最夸张的个人风格，也很适合当团队的中枢神经。',
+    scores: { entry: 22, awp: 12, igl: 91, lurker: 30, star: 40, win: 82, nerve: 80, discipline: 94, aggr: 24 },
   },
-
-  // ───────────────────────────────────────
-  //  #20  b1t — NAVI — 突破手
-  // ───────────────────────────────────────
   {
     ign: 'b1t',
     team: 'Natus Vincere', nationality: '🇺🇦 乌克兰',
     role: 'entry', role_label: '突破手',
     color: '#faad14',
-    tagline: '进包点就是进包点，没有"等一等"',
-    tags: ['突破手', '主动进攻', '快节奏'],
-    desc: '你是最先进包点的那个人，不管配合到不到位。Inferno A大跳坑，Mirage B侧强突，靠反应速度和胆量硬吃信息。有时候死得早，但你换来的信息让队友赢了这局。',
-    scores: { aggr: 88, role: 88, eco: 50, clutch: 72, team: 66, util: 54, meme: 64 },
+    tagline: '正面输出点，枪硬而且愿意先接触',
+    tags: ['突破手', '火力', '执行'],
+    desc: '你有很直接的进攻属性，喜欢通过最前线的枪感把回合往前推。你不是花哨型的打法，更像把最难的第一口枪和后续输出都兜在自己身上。打顺的时候，会给队伍一种压着往前走的感觉。',
+    scores: { entry: 88, awp: 10, igl: 16, lurker: 30, star: 80, win: 88, nerve: 80, discipline: 74, aggr: 84 },
   },
-
-  // ───────────────────────────────────────
-  //  额外选手：经典角色补充
-  // ───────────────────────────────────────
-
   {
     ign: 'karrigan',
     team: 'FaZe', nationality: '🇩🇰 丹麦',
-    role: 'igl', role_label: 'IGL',
+    role: 'igl', role_label: '指挥',
     color: '#c41d7f',
-    tagline: 'CS界最会用人的IGL',
-    tags: ['IGL', '经验型', '大赛指挥'],
-    desc: '你打CS靠脑子。知道什么时候激进、什么时候稳、什么时候超时打对面一个措手不及。Mirage A小的假烟走B、Dust2 mid的拿控换进攻——这些细节是你赢球的方式。',
-    scores: { aggr: 50, role: 78, eco: 86, clutch: 84, team: 96, util: 80, meme: 82 },
+    tagline: '老派指挥脑，知道什么时候该稳什么时候该赌',
+    tags: ['指挥', '老将', '调度'],
+    desc: '你更像那种把五个人的情绪、资源和信息都能揉在一起的人。你不一定自己最肥，但你很擅长决定什么时候加速、什么时候转、什么时候把球做给最该拿分的人。属于典型的团队发动机。',
+    scores: { entry: 34, awp: 10, igl: 99, lurker: 36, star: 52, win: 91, nerve: 89, discipline: 88, aggr: 68 },
   },
   {
     ign: 'broky',
     team: 'FaZe', nationality: '🇨🇿 捷克',
-    role: 'awp', role_label: '主狙',
+    role: 'awp', role_label: '狙击手',
     color: '#006d75',
-    tagline: '越到大赛越准的AWP',
-    tags: ['主狙', '大赛型', '稳定AWP'],
-    desc: '你的AWP在大赛才真正发光。普通比赛按部就班，关键局突然一把5K，对面还没回过神你已经换好AK了。Nuke主道、Ancient mid，守的每个角度都经过精密计算。',
-    scores: { aggr: 56, role: 91, eco: 76, clutch: 91, team: 72, util: 60, meme: 66 },
+    tagline: '大赛感很强的主狙，关键枪位相当有存在感',
+    tags: ['狙击手', '关键局', '沉稳'],
+    desc: '你属于那种在高压局里反而会显得更冷静的狙击手。你不需要太多额外动作，也不依赖很花的节奏变化，更多是靠稳定、关键枪和回合后半段的处理来收分。越关键越容易看出你值钱。',
+    scores: { entry: 18, awp: 94, igl: 28, lurker: 34, star: 80, win: 88, nerve: 94, discipline: 84, aggr: 34 },
   },
   {
     ign: 'Aleksib',
     team: 'Natus Vincere', nationality: '🇫🇮 芬兰',
-    role: 'igl', role_label: 'IGL',
+    role: 'igl', role_label: '指挥',
     color: '#fadb14',
-    tagline: '战术板上从不写"随机应变"',
-    tags: ['IGL', '体系型', '严格执行'],
-    desc: '你是那种会让队友背下来进包路线的IGL。Mirage B的标准道具进包、Inferno A侧慢推节奏，你的战术体系严密，不允许即兴发挥。但执行到位的时候，赢得比谁都干净。',
-    scores: { aggr: 40, role: 80, eco: 90, clutch: 74, team: 96, util: 84, meme: 24 },
+    tagline: '体系优先型指挥，执行精度感很强',
+    tags: ['指挥', '纪律', '结构'],
+    desc: '你是那种会优先把结构、顺序和细节想清楚的人。个人发挥当然重要，但你更看重每一步是否符合整体计划。你的风格不会最躁，却常常能把队伍带进更舒服、更少犯错的比赛方式。',
+    scores: { entry: 14, awp: 8, igl: 98, lurker: 26, star: 34, win: 84, nerve: 82, discipline: 99, aggr: 12 },
   },
   {
     ign: 'FalleN',
     team: 'FURIA', nationality: '🇧🇷 巴西',
-    role: 'igl_awp', role_label: 'IGL / 主狙',
+    role: 'igl_awp', role_label: '指挥 / 狙击手',
     color: '#52c41a',
-    tagline: 'CS传奇，AWP+战术双修的教父',
-    tags: ['IGL', '主狙', '经验型', '带队核心'],
-    desc: '你是打完一局还会复盘的人。AWP架着的同时脑子里想着战术，沙鹰局从不慌。Inferno CT端永远守得比别人好一分，因为比别人多想了一步。经验和天赋二合一。',
-    scores: { aggr: 60, role: 91, eco: 84, clutch: 90, team: 86, util: 76, meme: 72 },
+    tagline: '能拿狙也能带队的双修型老将',
+    tags: ['指挥', '狙击手', '老将'],
+    desc: '你兼具指挥和狙击手的气质：既懂怎么把回合打顺，也能自己拿高价值枪位解决问题。你不会把节奏打得特别乱，更擅长靠经验和回合理解慢慢压制对面。是那种看起来平静、实则掌控力很强的人。',
+    scores: { entry: 18, awp: 86, igl: 90, lurker: 24, star: 58, win: 88, nerve: 92, discipline: 90, aggr: 26 },
   },
   {
     ign: 'arT',
     team: 'Legacy', nationality: '🇧🇷 巴西',
-    role: 'igl', role_label: 'IGL / 突破手',
+    role: 'igl', role_label: '指挥',
     color: '#ad2102',
-    tagline: '世界最激进的IGL，带头冲的那种',
-    tags: ['IGL', '突破手', '极限激进'],
-    desc: '你的战术就是"冲"，而且是IGL带头冲。对面以为你在设战术，结果你Overpass先上水管了。完全靠侵略性打乱对面节奏，激进是战术不是莽撞——这是你对自己打法的解释。',
-    scores: { aggr: 98, role: 70, eco: 30, clutch: 80, team: 72, util: 46, meme: 99 },
+    tagline: '最有个人风格的指挥之一，喜欢把局面直接掀翻',
+    tags: ['指挥', '激进', '先手'],
+    desc: '你不是传统意义上那种先把全局排得很整齐再开打的指挥，你更像拿自己行动给全队定调的人。你会用极高的主动性和压迫感逼对面出错，也愿意亲自承担这种风格的代价。张力非常强。',
+    scores: { entry: 72, awp: 10, igl: 94, lurker: 20, star: 62, win: 93, nerve: 84, discipline: 46, aggr: 99 },
   },
 
 ];

@@ -36,7 +36,7 @@ function startQuiz() {
 function renderQuestion() {
   const q      = QUESTIONS[currentQ];
   const total  = QUESTIONS.length;
-  const letters = ['A', 'B', 'C', 'D'];
+  const letters = ['A', 'B', 'C', 'D', 'E'];
 
   // 更新导航信息
   document.getElementById('dimLabel').textContent      = q.dimLabel;
@@ -115,9 +115,36 @@ function prevQ() {
 /* ══ 计算用户得分 ══ */
 function calcUserScores() {
   const acc = {};
-  DIMENSIONS.forEach(d => { acc[d.id] = 0; });
+  const minAcc = {};
+  const maxAcc = {};
+  DIMENSIONS.forEach(d => {
+    acc[d.id] = 0;
+    minAcc[d.id] = 0;
+    maxAcc[d.id] = 0;
+  });
 
   QUESTIONS.forEach(q => {
+    const perDimMin = {};
+    const perDimMax = {};
+
+    q.options.forEach(opt => {
+      DIMENSIONS.forEach(d => {
+        const val = opt.scores[d.id] || 0;
+        if (!(d.id in perDimMin)) {
+          perDimMin[d.id] = val;
+          perDimMax[d.id] = val;
+        } else {
+          perDimMin[d.id] = Math.min(perDimMin[d.id], val);
+          perDimMax[d.id] = Math.max(perDimMax[d.id], val);
+        }
+      });
+    });
+
+    DIMENSIONS.forEach(d => {
+      minAcc[d.id] += perDimMin[d.id] || 0;
+      maxAcc[d.id] += perDimMax[d.id] || 0;
+    });
+
     const idx = answers[q.id];
     if (idx === undefined) return;
     Object.entries(q.options[idx].scores).forEach(([dim, val]) => {
@@ -125,11 +152,14 @@ function calcUserScores() {
     });
   });
 
-  // 归一化：每维度5题，极端值 ±3×5 = ±15
-  const MAX = 15;
   const norm = {};
   DIMENSIONS.forEach(d => {
-    norm[d.id] = Math.round(Math.min(100, Math.max(0, ((acc[d.id] + MAX) / (2 * MAX)) * 100)));
+    const min = minAcc[d.id];
+    const max = maxAcc[d.id];
+    const span = max - min;
+    norm[d.id] = span > 0
+      ? Math.round(Math.min(100, Math.max(0, ((acc[d.id] - min) / span) * 100)))
+      : 50;
   });
   return norm;
 }
