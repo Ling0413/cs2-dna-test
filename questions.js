@@ -233,7 +233,7 @@ const QUESTIONS = [
     id: 'star_4', dimLabel: '👑 大哥位',
     text: '你心里的 CS 完美五人组，更像哪种味儿？',
     options: [
-      { text: '丰川箱子这挂的，先抽象起来，赢不赢一会儿再说', scores: { entry: 0, awp: 0, igl: 0, lurker: 0, star: 0, win: 0, nerve: 1, discipline: -1, aggr: 0, bt: 3 } },
+      { text: '怀念最好的五个人：千早爱烟，偷摸rain，长期监视，疯穿箱子，ro叶睦', scores: { entry: 0, awp: 0, igl: 0, lurker: 0, star: 0, win: 0, nerve: 1, discipline: -1, aggr: 0, bt: 3 } },
       { text: '某个王朝战队那种，谁站哪、谁干嘛、谁来擦屁股，全都明明白白', scores: { entry: -1, awp: 0, igl: 2, lurker: 0, star: 1, win: 2, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
       { text: '总监总监总监总监总监，场上就得一直有人管着，不然全得散黄', scores: { entry: 0, awp: 0, igl: 3, lurker: 0, star: 0, win: 1, nerve: 1, discipline: 2, aggr: -1, bt: 2 } },
       { text: 'ZywOo、s1mple、device、m0NESY、molodoy 直接摞一桌，先把天赋和大狙味儿拉满', scores: { entry: 1, awp: 3, igl: 0, lurker: -1, star: 3, win: 3, nerve: 1, discipline: -2, aggr: 2, bt: 1 } },
