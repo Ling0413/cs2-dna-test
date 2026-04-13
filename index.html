@@ -376,6 +376,24 @@
       max-width: 680px;
     }
 
+    /* bt 隐藏维度档位 → 结果页整体气质（由 app.js 切换 .bt-* class） */
+    .result-wrap.bt-calm .player-card { border-color: var(--border); }
+    .result-wrap.bt-warm .player-card {
+      border-color: rgba(255, 122, 60, 0.35);
+      box-shadow: 0 8px 40px rgba(255, 92, 26, 0.08);
+    }
+    .result-wrap.bt-spicy .player-card {
+      border-color: rgba(235, 47, 150, 0.45);
+      box-shadow: 0 8px 36px rgba(235, 47, 150, 0.12);
+    }
+    .result-wrap.bt-unhinged .player-card {
+      border-color: #7c3aed;
+      box-shadow: 0 8px 40px rgba(124, 58, 237, 0.18);
+    }
+    .result-wrap.bt-unhinged .player-desc {
+      border-left-color: #7c3aed;
+    }
+
     .result-header { padding: 20px 0 28px; text-align: center; }
     .result-header h2 {
       font-size: 14px;

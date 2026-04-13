@@ -112,7 +112,59 @@ function prevQ() {
   if (currentQ > 0) { currentQ--; renderQuestion(); }
 }
 
-/* ══ 计算用户得分 ══ */
+/* ══ 隐藏维度 bt（累加，不参与 0~100 归一化 / 雷达 / 匹配）══ */
+function maxBtPerQuiz() {
+  let sum = 0;
+  QUESTIONS.forEach(q => {
+    let qMax = 0;
+    q.options.forEach(opt => {
+      const b = Math.max(0, (opt.scores && opt.scores.bt) || 0);
+      qMax = Math.max(qMax, b);
+    });
+    sum += qMax;
+  });
+  return sum;
+}
+
+/** 各题所选选项的 bt 之和（questions.js 里已保证非负） */
+function calcUserBtTotal() {
+  let total = 0;
+  QUESTIONS.forEach(q => {
+    const idx = answers[q.id];
+    if (idx === undefined) return;
+    const s = q.options[idx].scores;
+    total += Math.max(0, (s && s.bt) || 0);
+  });
+  return total;
+}
+
+/**
+ * 按「本题可选 bt 上限」累加得到满分，用占比决定结果页模板档位。
+ * 返回 { total, maxPossible, ratio, tierClass }
+ */
+function calcBtTemplateMeta() {
+  const total = calcUserBtTotal();
+  const maxPossible = maxBtPerQuiz();
+  const ratio = maxPossible > 0 ? total / maxPossible : 0;
+  let tierClass = 'bt-unhinged';
+  if (ratio <= 0.2) tierClass = 'bt-calm';
+  else if (ratio <= 0.45) tierClass = 'bt-warm';
+  else if (ratio <= 0.7) tierClass = 'bt-spicy';
+  return { total, maxPossible, ratio, tierClass };
+}
+
+const BT_TEMPLATE_CLASSES = ['bt-calm', 'bt-warm', 'bt-spicy', 'bt-unhinged'];
+
+function applyResultBtTemplate(meta) {
+  const wrap = document.querySelector('#page-result .result-wrap');
+  if (!wrap) return;
+  BT_TEMPLATE_CLASSES.forEach(c => wrap.classList.remove(c));
+  wrap.classList.add(meta.tierClass);
+  wrap.dataset.btTotal = String(meta.total);
+  wrap.dataset.btTier = meta.tierClass.replace(/^bt-/, '');
+}
+
+/* ══ 计算用户得分（仅 DIMENSIONS 中的 9 维；bt 见上）══ */
 function calcUserScores() {
   const acc = {};
   const minAcc = {};
@@ -189,11 +241,13 @@ function matchPlayers(userScores) {
 /* ══ 展示结果 ══ */
 function showResult() {
   const userScores = calcUserScores();
+  const btMeta     = calcBtTemplateMeta();
   const ranked     = matchPlayers(userScores);
   const best       = ranked[0];
   const matchPct   = Math.round(best.score * 100);
 
   showPage('result');
+  applyResultBtTemplate(btMeta);
 
   // 基本信息
   document.getElementById('resName').textContent    = best.player.ign;
