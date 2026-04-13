@@ -21,22 +21,23 @@ const QUESTIONS = [
 
   {
     id: 'entry_1', dimLabel: '💥 突破手',
-    text: 'Inferno T 方默认开局，你是最靠前的人。香蕉道口有机会吃闪强顶，你会怎么处理？',
+    text: 'Inferno T 方默认开局，你是最靠前的人。在吃完雷火闪套餐后，你冲到了石板后。这时对手封了颗烟，你会怎么处理？',
     options: [
-      { text: '直接吃闪顶进去，先把第一波对抗打出来', scores: { entry: 3, awp: -1, igl: 0, lurker: -2, star: 1, win: 2, nerve: 0, discipline: -2, aggr: 3, bt: 0 } },
-      { text: '往前压半步拿信息，但一定给自己留退路', scores: { entry: 2, awp: 0, igl: 0, lurker: -1, star: 1, win: 1, nerve: 1, discipline: 0, aggr: 1, bt: 0 } },
-      { text: '等队友道具和补枪都到位，再统一展开', scores: { entry: 0, awp: 0, igl: 1, lurker: -1, star: 0, win: 0, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '先 fake 一下逼反应，确认信息后再决定要不要硬进', scores: { entry: 1, awp: 1, igl: 2, lurker: 1, star: -1, win: 0, nerve: 2, discipline: 2, aggr: 0, bt: 0 } },
+      { text: '烟？这不得钻？', scores: { entry: 3, awp: -1, igl: 0, lurker: 2, star: 1, win: 2, nerve: 0, discipline: -2, aggr: 3, bt: 1 } },
+      //karrigan的回答
+      { text: '先不急，指挥队友来钻烟拉枪线', scores: { entry: 1, awp: 0, igl: 1, lurker: 0, star: 2, win: 1, nerve: 1, discipline: 0, aggr: 1, bt: 1 } },
+      { text: '按兵不动，结合去A点的队友有没有送再做决定', scores: { entry: 0, awp: 0, igl: 2, lurker: 0, star: 1, win: 0, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '再封一颗烟', scores: { entry: 0, awp: 0, igl: 0, lurker: 1, star: 1, win: 0, nerve: 2, discipline: 0, aggr: 0, bt: 3 } },
     ],
   },
   {
     id: 'entry_2', dimLabel: '💥 突破手',
-    text: 'Mirage A 爆弹前，你知道自己大概率是第一个飞进包点的人。你最像哪种心态？',
+    text: 'Rush前，由于身位，你知道自己是第一个飞进包点的人。你最像哪种心态？',
     options: [
-      { text: '我就是吃第一颗子弹的人，能把包点撞开最重要', scores: { entry: 3, awp: -1, igl: 0, lurker: -2, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 3, bt: 0 } },
-      { text: '可以先飞，但一定要确保第二身位能跟上 trade', scores: { entry: 2, awp: 0, igl: 1, lurker: -1, star: 1, win: 1, nerve: 1, discipline: 1, aggr: 1, bt: 0 } },
-      { text: '我更想当第二拍，让第一身位先把信息送出来', scores: { entry: -1, awp: 0, igl: 0, lurker: 0, star: 1, win: 0, nerve: 1, discipline: 2, aggr: -1, bt: 0 } },
-      { text: '不如先假爆骗回防，等对面露更多信息再打', scores: { entry: 0, awp: 0, igl: 2, lurker: 1, star: 0, win: 0, nerve: 2, discipline: 2, aggr: -2, bt: 0 } },
+      { text: '我是好色闪光，早点死了可以看短视频😋', scores: { entry: 3, awp: 0, igl: 0, lurker: -2, star: 1, win: 0, nerve: 2, discipline: 0, aggr: 3, bt: 2 } },
+      { text: '跳出去，然后旋转跳回来', scores: { entry: 0, awp: 0, igl: 1, lurker: 1, star: 1, win: -1, nerve: 1, discipline: -2, aggr: 0, bt: 3 } },
+      { text: '我是黑色闪光，其实我更想当第二拍，让第一身位先把信息送出来', scores: { entry: 0, awp: 1, igl: 1, lurker: 0, star: 3, win: 0, nerve: 1, discipline: -1, aggr: -1, bt: 0 } },
+      { text: '我是黄色闪光，我（眼前一片白色）', scores: { entry: 3, awp: 0, igl: 0, lurker: 1, star: 0, win: 2, nerve: 1, discipline: 3, aggr: -2, bt: 0 } },
     ],
   },
   {
@@ -231,11 +232,11 @@ const QUESTIONS = [
   },
   {
     id: 'star_4', dimLabel: '👑 大哥位',
-    text: '你心里的 CS 完美五人组，更像哪种味儿？',
+    text: '你心里的 CS 完美五人组:',
     options: [
       { text: '怀念最好的五个人：千早爱烟，偷摸rain，长期监视，疯穿箱子，ro叶睦', scores: { entry: 0, awp: 0, igl: 0, lurker: 0, star: 0, win: 0, nerve: 1, discipline: -1, aggr: 0, bt: 3 } },
       { text: '某个王朝战队那种，谁站哪、谁干嘛、谁来擦屁股，全都明明白白', scores: { entry: -1, awp: 0, igl: 2, lurker: 0, star: 1, win: 2, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '总监总监总监总监总监，场上就得一直有人管着，不然全得散黄', scores: { entry: 0, awp: 0, igl: 3, lurker: 0, star: 0, win: 1, nerve: 1, discipline: 2, aggr: -1, bt: 2 } },
+      { text: '总监总监总监总监总监，场上就得一直有人管着，开宫没有回头监', scores: { entry: 0, awp: 0, igl: 2, lurker: 0, star: 0, win: 2, nerve: 1, discipline: 2, aggr: 1, bt: 2 } },
       { text: 'ZywOo、s1mple、device、m0NESY、molodoy 直接摞一桌，先把天赋和大狙味儿拉满', scores: { entry: 1, awp: 3, igl: 0, lurker: -1, star: 3, win: 3, nerve: 1, discipline: -2, aggr: 2, bt: 1 } },
     ],
   },
