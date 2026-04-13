@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs & temp
+*.log
+*.tmp
+.cache/
+
+# Optional: if you add Node tooling later
+node_modules/
+.env
+.env.*
+!.env.example
