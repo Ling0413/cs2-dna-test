@@ -163,10 +163,10 @@
     /* 维度预览 */
     .dim-preview {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       width: 100%;
-      max-width: 500px;
+      max-width: 640px;
       margin-bottom: 40px;
     }
     .dim-card {
@@ -634,7 +634,7 @@
       你的打法<br>像哪位<span class="hl">职业选手</span>？
     </h1>
     <p class="hero-sub">
-      30道高度还原真实CS2场景的题目，从6个维度精准匹配你与HLTV前20战队选手的打法相似度。
+      35道高度还原真实CS2场景的题目，从7个维度精准匹配你与HLTV前20战队选手的打法相似度，顺便测测你有没有整活基因。
     </p>
 
     <div class="stats-row">
@@ -643,11 +643,11 @@
         <div class="stat-label">职业选手档案</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num"><span>30</span></div>
+        <div class="stat-num"><span>35</span></div>
         <div class="stat-label">场景化题目</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num"><span>6</span></div>
+        <div class="stat-num"><span>7</span></div>
         <div class="stat-label">打法维度</div>
       </div>
     </div>
@@ -665,12 +665,13 @@
       <div class="dim-card"><div class="dim-icon">🧠</div><div class="dim-name">残局心理</div></div>
       <div class="dim-card"><div class="dim-icon">🤝</div><div class="dim-name">团队意识</div></div>
       <div class="dim-card"><div class="dim-icon">💣</div><div class="dim-name">道具使用</div></div>
+      <div class="dim-card"><div class="dim-icon">🤡</div><div class="dim-name">整活指数</div></div>
     </div>
 
     <button class="btn-start" onclick="startQuiz()">
       开始测试 <span class="btn-arrow">→</span>
     </button>
-    <p class="landing-note">约 5 分钟完成 · 结果可分享</p>
+    <p class="landing-note">约 6 分钟完成 · 结果可分享</p>
   </div>
 </div>
 
@@ -683,11 +684,11 @@
 
     <div class="quiz-header">
       <span class="dim-label-badge" id="dimLabel">⚔️ 进攻侵略性</span>
-      <span class="progress-count" id="progressCount">1 / 30</span>
+      <span class="progress-count" id="progressCount">1 / 35</span>
     </div>
 
     <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="progressFill" style="width: 3.3%"></div>
+      <div class="progress-bar-fill" id="progressFill" style="width: 2.9%"></div>
     </div>
 
     <div class="question-card" id="questionCard">
@@ -738,7 +739,7 @@
 
     <!-- 雷达图 -->
     <div class="radar-card">
-      <h3>📊 六维打法图谱</h3>
+      <h3>📊 七维打法图谱</h3>
       <div class="radar-body">
         <canvas id="radarCanvas" width="240" height="240"></canvas>
         <div class="radar-legend" id="radarLegend"></div>

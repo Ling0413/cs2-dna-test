@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════
 //  questions.js  —  CS2 DNA 题目库
-//  共 30 题，6 个维度，每维度 5 题
+//  共 35 题，7 个维度，每维度 5 题
 //
 //  ⚠️  如需修改或新增题目，直接编辑此文件即可。
 //
@@ -11,6 +11,7 @@
 //    clutch 残局心理    —— 1vN 或落后时的抗压能力
 //    team   团队意识    —— 配合 vs 个人英雄主义
 //    util   道具使用    —— 烟雾弹/闪光弹/燃烧瓶的重视程度
+//    meme   整活维度    —— 节目效果 / 非常规操作 / 临场整活
 //
 //  分值说明：
 //    每个选项对各维度加减 -3 ~ +3
@@ -371,6 +372,65 @@ const QUESTIONS = [
       { text: '一般，基础的会，复杂的线路不深究', scores: { aggr: 0, role: 1, eco: 0, clutch: 0, team: 1, util: 1 } },
       { text: '比较薄弱，我更依赖枪法和反应', scores: { aggr: 2, role: 1, eco: 0, clutch: 1, team: -1, util: -2 } },
       { text: '在学，知道道具很重要，但还没系统练', scores: { aggr: 0, role: 1, eco: 0, clutch: 0, team: 1, util: 1 } },
+    ],
+  },
+
+  // ══════════════════════════════════════
+  //  维度7：整活维度（5题）
+  // ══════════════════════════════════════
+
+  {
+    id: 'meme_1', dimLabel: '🤡 整活维度',
+    text: '地上有一把“永恒大狙”，你手里是 AK，队友还说“别捡，会掉节奏”。你会？',
+    options: [
+      { text: '捡，哪怕这局不会用，也得先开一枪过把瘾', scores: { aggr: 1, role: 0, eco: -1, clutch: 0, team: -1, util: 0, meme: 3 } },
+      { text: '先问队友谁更会用，没人要我再拿起来整一把', scores: { aggr: 0, role: 1, eco: 1, clutch: 0, team: 2, util: 0, meme: 1 } },
+      { text: '不捡，枪在地上再帅，也没有当前站位重要', scores: { aggr: -1, role: 2, eco: 2, clutch: 1, team: 1, util: 0, meme: -2 } },
+      { text: '看比分，领先很多就捡着玩，关键局绝对不碰', scores: { aggr: 0, role: 1, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+    ],
+  },
+
+  {
+    id: 'meme_2', dimLabel: '🤡 整活维度',
+    text: '热身时你在 Mirage 中路连了两个穿烟爆头，队友起哄“正赛也这样打”。你会？',
+    options: [
+      { text: '下局直接来一把同路线复刻，节目效果拉满', scores: { aggr: 2, role: 1, eco: -1, clutch: 1, team: 0, util: 0, meme: 3 } },
+      { text: '嘴上说行，开局还是先按战术默认', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 2, util: 0, meme: -1 } },
+      { text: '让队友先给道具配合，真能成再整', scores: { aggr: 0, role: 2, eco: 0, clutch: 1, team: 2, util: 2, meme: 1 } },
+      { text: '先观察对面有没有防备，没机会就不硬演', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+    ],
+  },
+
+  {
+    id: 'meme_3', dimLabel: '🤡 整活维度',
+    text: 'Eco 局队友突然提议“五把 Tec-9 一起冲烟刀一个”，你第一反应是？',
+    options: [
+      { text: '冲，eco 局不整活那什么时候整', scores: { aggr: 3, role: 0, eco: -2, clutch: 1, team: 1, util: 0, meme: 3 } },
+      { text: '可以整，但我得先丢颗闪，不然像白给', scores: { aggr: 1, role: 2, eco: -1, clutch: 0, team: 2, util: 2, meme: 1 } },
+      { text: '别闹，eco 局能换枪就已经很赚了', scores: { aggr: -2, role: 2, eco: 3, clutch: 1, team: 1, util: 0, meme: -2 } },
+      { text: '如果比分大优我陪你们玩，胶着局别搞', scores: { aggr: 0, role: 1, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+    ],
+  },
+
+  {
+    id: 'meme_4', dimLabel: '🤡 整活维度',
+    text: '你在 Nuke CT 外场拿着鸟狙，对面刚暂停回来。你会怎么站？',
+    options: [
+      { text: '前顶红箱，打一个就是本局集锦', scores: { aggr: 2, role: 1, eco: -1, clutch: 2, team: 0, util: 0, meme: 3 } },
+      { text: '正常守默认点，鸟狙也要当正经枪用', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 1, util: 0, meme: -2 } },
+      { text: '让队友补颗闪，我去找个非常规角度偷一个', scores: { aggr: 1, role: 2, eco: 0, clutch: 1, team: 2, util: 2, meme: 1 } },
+      { text: '看对面上一局外场节奏，真有空档再换位整活', scores: { aggr: 0, role: 3, eco: 1, clutch: 2, team: 1, util: 0, meme: 0 } },
+    ],
+  },
+
+  {
+    id: 'meme_5', dimLabel: '🤡 整活维度',
+    text: '你刚打出一个穿烟爆头，语音里全在刷“这也行？”。下一局你会？',
+    options: [
+      { text: '乘胜追击，再找一个更离谱的 timing', scores: { aggr: 2, role: 1, eco: -1, clutch: 1, team: 0, util: 0, meme: 3 } },
+      { text: '收一收，刚才那球是高光，不是常规打法', scores: { aggr: -1, role: 2, eco: 1, clutch: 2, team: 1, util: 0, meme: -1 } },
+      { text: '提醒队友别上头，先把信息和默认做好', scores: { aggr: -1, role: 2, eco: 1, clutch: 1, team: 3, util: 0, meme: -2 } },
+      { text: '可以继续找非常规机会，但前提是先沟通', scores: { aggr: 0, role: 3, eco: 0, clutch: 2, team: 2, util: 0, meme: 1 } },
     ],
   },
 
