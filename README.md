@@ -1,239 +1,359 @@
 # 🎮 CS2 DNA — 打法基因测试
 
-> 通过 30 道高还原度的 CS2 场景题，定位你与哪位职业选手打法最相似。
+> 36 道场景题，9 个可见维度 + 1 个隐藏 `bt` 维度，匹配你最像哪位 CS2 职业选手。
 
-**在线体验：** https://ling0413.github.io/cs2-dna-test/
-
----
-
-## 📁 代码目录
-
-```
-cs2-dna-test/
-├── index.html      # 页面结构 + 完整 CSS 样式系统
-├── players.js      # ✏️ 职业选手档案库（25 位，可自由增删）
-├── questions.js    # ✏️ 题目库（30 题，6 维度，可自由修改）
-└── app.js          # 核心逻辑：答题控制、匹配算法、雷达图绘制
-```
-
-> **日常维护只需关注 `players.js` 和 `questions.js`，其余文件无需改动。**
+**在线体验：** `https://ling0413.github.io/cs2-dna-test/`
 
 ---
 
-## 🧠 核心逻辑
+## 项目概览
 
-### 1. 六维评分体系
+这是一个**纯前端静态项目**，不依赖构建工具，也不需要后端服务。
 
-每道题对应一个维度，答案选项携带该维度的分值（-3 ~ +3）：
+当前版本基于以下数据与逻辑：
 
-| 维度 ID | 中文名 | 说明 |
-|---------|--------|------|
-| `aggression` | 战术攻击性 | 激进冲杀 vs 稳健等待 |
-| `role` | 角色定位 | 突破手 / 道具手 / 自由人 / IGL / 主狙 |
-| `economy` | 经济纪律 | 严格 eco vs 随性买枪 |
-| `mental` | 心理韧性 | 逆境抗压、残局处置 |
-| `teamplay` | 团队协作 | 团队配合 vs 个人 carry |
-| `weapon` | 武器偏好 | 步枪 / 狙击 / 道具 / 手枪局 |
-
-用户完成 30 题后，系统对每个维度累计原始分，再归一化到 **0 ~ 100**。
-
-### 2. 选手匹配算法
-
-使用 **余弦相似度（60%）+ 欧式距离相似度（40%）** 混合计算：
-
-```js
-// 余弦相似度：衡量方向一致性
-cosineSimilarity(userVec, playerVec)
-
-// 欧式距离相似度：衡量数值接近程度
-euclidSimilarity = 1 - RMSD / 100
-
-// 最终得分
-finalScore = cosine * 0.6 + euclidSim * 0.4
-```
-
-对全部 25 位选手排序后，取得分最高者为主匹配，第 2-4 名展示为"其他接近选手"。
-
-### 3. 结果展示
-
-- **环形进度条**：展示与主匹配选手的相似度百分比
-- **Canvas 雷达图**：用户六维分布（橙色）vs 选手参考（选手主色）叠加对比
-- **选手档案卡**：国籍、战队、角色、风格标签、人物描述
-- **其他匹配**：前 3 名其他相似选手卡片
+- **25 位职业选手档案**
+- **36 道题目**
+- **9 个可见维度**：`突破手`、`狙击手`、`指挥`、`自由人`、`大哥位`、`胜负欲`、`抗压性`、`纪律性`、`激进度`
+- **1 个隐藏维度**：`bt`
+  - 不参与雷达图
+  - 不参与职业选手匹配
+  - 仅用于决定结果页整体模板气质
 
 ---
 
-## ✏️ 如何修改题目（questions.js）
+## 文件结构
 
-每道题的数据结构如下：
+```text
+csti/
+├── index.html   # 页面结构、样式、静态文案
+├── players.js   # 9 个可见维度定义 + 25 位职业选手画像
+├── questions.js # 36 道题目与选项分值（含隐藏维度 bt）
+├── app.js       # 答题流程、归一化、匹配算法、雷达图、bt 模板逻辑
+└── README.md
+```
+
+日常维护时，最常改的是：
+
+- `questions.js`
+- `players.js`
+- `index.html` 里的静态展示文案（例如首页题目数、维度数）
+
+---
+
+## 当前维度体系
+
+### 可见维度（参与雷达图和匹配）
+
+| ID | 中文名 | 类型 |
+|---|---|---|
+| `entry` | 突破手 | 位置维度 |
+| `awp` | 狙击手 | 位置维度 |
+| `igl` | 指挥 | 位置维度 |
+| `lurker` | 自由人 | 位置维度 |
+| `star` | 大哥位 | 位置维度 |
+| `win` | 胜负欲 | 性格维度 |
+| `nerve` | 抗压性 | 性格维度 |
+| `discipline` | 纪律性 | 性格维度 |
+| `aggr` | 激进度 | 性格维度 |
+
+### 隐藏维度
+
+| ID | 名称 | 用途 |
+|---|---|---|
+| `bt` | 隐藏整活维度 | 仅累计，不参与 0~100 归一化、雷达图或选手匹配 |
+
+---
+
+## 核心逻辑
+
+### 题目与打分
+
+`questions.js` 中共 36 道题，每道题有 4 个选项。
+
+**每个选项都会对全部 10 个维度显式打分**：
+
+- 9 个可见维度
+- 1 个隐藏维度 `bt`
+
+当前题库约定：
+
+- 可见维度通常使用 `-3 ~ 3` 的离散分值
+- `bt` 用于累加整活程度，建议保持**非负数**
+- 为了便于维护，所有 `scores` 都保持完整字段，不使用简写
+
+示例：
 
 ```js
 {
-  id: 'q01',           // 唯一 ID，不要重复
-  dim: 'aggression',   // 对应维度（见上表）
-  dimLabel: '⚔️ 战术攻击性',
-  text: '题目文字...',
+  id: 'entry_1',
+  dimLabel: '💥 突破手',
+  text: 'Inferno T 方默认开局，你会怎么处理？',
   options: [
-    { text: 'A 选项文字', scores: { aggression: 3 } },
-    { text: 'B 选项文字', scores: { aggression: 1 } },
-    { text: 'C 选项文字', scores: { aggression: -1 } },
-    { text: 'D 选项文字', scores: { aggression: -3 } },
-  ]
+    {
+      text: '烟？这不得钻？',
+      scores: {
+        entry: 3,
+        awp: -1,
+        igl: 0,
+        lurker: 2,
+        star: 1,
+        win: 2,
+        nerve: 0,
+        discipline: -2,
+        aggr: 3,
+        bt: 1,
+      },
+    },
+  ],
 }
 ```
 
-**scores 填写规则：**
-- `+3` = 强烈倾向该维度高分方向
-- `+1` = 轻微倾向
-- `-1` = 轻微倾向低分
-- `-3` = 强烈倾向低分
-- 每题只需填写主维度分值即可
+---
+
+### 用户分数计算
+
+`app.js` 会对 **9 个可见维度**做动态归一化：
+
+1. 遍历所有题目，统计每个维度在每题里的**最小值**与**最大值**
+2. 将用户实际作答累积分与理论上下界进行比较
+3. 最终把每个可见维度归一化到 **0 ~ 100**
+
+这意味着：
+
+- 题目数量变化后，不需要手写调整总分上限
+- 某一维度即使不同题目分布不完全一致，也能正常归一化
 
 ---
 
-## ✏️ 如何新增选手（players.js）
+### 选手匹配算法
 
-复制以下模板，填入对应数据：
+职业选手匹配只使用 `players.js` 中的 **9 个可见维度画像**。
+
+综合得分公式：
+
+- **余弦相似度 60%**
+- **欧式距离相似度 40%**
+
+即：
+
+```js
+finalScore = cosineSim(userScores, playerScores) * 0.6
+           + euclidSim(userScores, playerScores) * 0.4
+```
+
+结果页会展示：
+
+- **主匹配选手**（第 1 名）
+- **其他相近选手**（第 2 ~ 4 名）
+
+---
+
+### `bt` 隐藏维度逻辑
+
+`bt` 不参与匹配，但会影响结果页的模板气质。
+
+`app.js` 的处理方式是：
+
+1. 统计用户所有选项中的 `bt` 总和
+2. 统计整份题库每题可取得的最大 `bt`，得到理论满分
+3. 用占比决定结果页样式档位
+
+当前档位为：
+
+- `bt-calm`：`ratio <= 0.2`
+- `bt-warm`：`0.2 < ratio <= 0.45`
+- `bt-spicy`：`0.45 < ratio <= 0.7`
+- `bt-unhinged`：`ratio > 0.7`
+
+如果你想继续增强“整活感”，优先修改：
+
+- `questions.js` 中各选项的 `bt`
+- `index.html` 中结果页对应的 `.bt-*` 样式
+
+---
+
+## 数据维护指南
+
+### 1. 修改题目：`questions.js`
+
+每道题结构示例：
 
 ```js
 {
-  ign: 'PlayerName',           // 游戏 ID
-  fullName: '真实姓名',
-  nationality: '🇺🇦 乌克兰',
-  team: 'NAVI',
-  role: 'entry',               // entry / support / lurker / igl / awper
-  role_label: '突破手',
-  color: '#F5A623',            // 选手专属主色（用于雷达图和高亮）
-  tags: ['激进', '个人carry'],  // 风格标签（2-4个）
-  tagline: '一句话风格描述',
-  desc: '详细的选手打法描述（2-3句话）',
-  scores: {                    // 六维分值，0-100
-    aggression: 95,
-    role:       80,
-    economy:    45,
-    mental:     85,
-    teamplay:   60,
-    weapon:     70,
-  }
+  id: 'win_1',
+  dimLabel: '🏆 胜负欲',
+  text: '题目内容',
+  options: [
+    {
+      text: '选项文案',
+      scores: {
+        entry: 0,
+        awp: 0,
+        igl: 1,
+        lurker: 0,
+        star: 2,
+        win: 3,
+        nerve: 0,
+        discipline: 1,
+        aggr: 1,
+        bt: 0,
+      },
+    },
+  ],
 }
 ```
 
-**scores 标定参考：**
-- `aggression`：激进程度，arT/YEKINDAR ≈ 95，Jame ≈ 10
-- `role`：角色中心性，越高越倾向个人 carry，IGL 通常较低
-- `economy`：经济纪律，Jame ≈ 95（极度保守），arT ≈ 20
-- `mental`：逆境表现，s1mple/ZywOo ≈ 95
-- `teamplay`：团队依赖度越高分越高，IGL 通常 85+
-- `weapon`：步枪倾向越高分越高，纯 AWP 手通常 10-30
+维护时注意：
+
+- `id` 必须唯一
+- `scores` 请保留**全部 10 个字段**，方便直接查看和手调
+- 如果只是普通题，`bt` 可以写 `0`
+- 如果是明显整活题，可以适当提高 `bt`
+- 新增题目后，进度条会自动按 `QUESTIONS.length` 计算
 
 ---
 
-## 🚀 部署方式
+### 2. 修改选手：`players.js`
 
-### 方式一：GitHub Pages（当前使用，推荐）
+`players.js` 中包含两部分：
 
-**首次部署（已完成）：**
+- `DIMENSIONS`：9 个可见维度定义
+- `PLAYERS`：25 位职业选手档案
 
-```bash
-git init
-git add .
-git commit -m "first commit"
-gh repo create cs2-dna-test --public --source=. --push
-gh api repos/你的用户名/cs2-dna-test/pages \
-  --method POST -f "source[branch]=master" -f "source[path]=/"
+选手结构示例：
+
+```js
+{
+  ign: 'ZywOo',
+  team: 'Vitality',
+  nationality: '🇫🇷 法国',
+  role: 'awp',
+  role_label: '狙击手',
+  color: '#f7c600',
+  tagline: '全能型主狙，关键分永远有人能站出来',
+  tags: ['狙击手', '大场面', '稳定终结'],
+  desc: '描述文案',
+  scores: {
+    entry: 28,
+    awp: 97,
+    igl: 32,
+    lurker: 38,
+    star: 88,
+    win: 90,
+    nerve: 97,
+    discipline: 86,
+    aggr: 42,
+  },
+}
 ```
 
-访问地址：`https://你的用户名.github.io/cs2-dna-test/`
+维护时注意：
 
-**日常更新（修改题目/选手后）：**
-
-```bash
-git add .
-git commit -m "更新题目/选手数据"
-git push
-```
-
-推送后约 1-2 分钟自动生效。
+- `players.js` **只保留 9 个可见维度分数**
+- 当前匹配逻辑**不使用 `bt`**，所以不要直接把 `bt` 混入选手画像，除非你同时修改匹配算法
+- `color` 会用于结果页环形进度条、雷达图参考轮廓和其他视觉高亮
 
 ---
 
-### 方式二：绑定自定义域名
+### 3. 修改页面文案与样式：`index.html`
 
-如果你有自己的域名（如 `cs2dna.com`），按以下步骤操作：
+当前 `index.html` 除了页面结构外，还包含：
 
-**Step 1：在 DNS 服务商添加 CNAME 记录**
+- 全部 CSS
+- 首页统计数字
+- 首页维度预览卡片
+- 结果页 `bt` 样式分档
 
-| 类型 | 主机记录 | 记录值 |
-|------|----------|--------|
-| CNAME | `@` 或 `www` | `ling0413.github.io` |
+如果你后续改了：
 
-> 如果用根域名（`@`），部分 DNS 服务商需要改用 A 记录，指向 GitHub 的 IP：
-> `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153`
+- 题目总数
+- 可见维度数量
+- 维度中文名
 
-**Step 2：在仓库根目录创建 `CNAME` 文件**
+记得同步检查 `index.html` 中的：
 
-```bash
-echo "你的域名" > CNAME   # 例如：cs2dna.com
-git add CNAME
-git commit -m "add custom domain"
-git push
-```
-
-**Step 3：在 GitHub 仓库设置中填写域名**
-
-进入 `仓库 → Settings → Pages → Custom domain`，填入你的域名，勾选 `Enforce HTTPS`。
-
-DNS 生效需要 5 分钟 ~ 24 小时，之后直接用你的域名访问即可。
+- 首页副标题
+- 首页统计数字
+- 维度预览区域
+- 结果页标题文案
 
 ---
 
-## 🛠️ 本地开发
+## 本地运行
+
+这是纯静态项目，直接起一个本地 HTTP 服务即可。
+
+### 使用 Python
 
 ```bash
-# 在项目目录启动本地服务器
-cd cs2-dna-test
 python3 -m http.server 8080
-
-# 浏览器访问
-open http://localhost:8080
 ```
 
-> 必须通过 HTTP 服务器访问，不能直接双击 `index.html`（否则 JS 文件加载会被浏览器安全策略拦截）。
+然后访问：`http://localhost:8080`
+
+### 使用 Node.js
+
+```bash
+npx serve .
+```
+
+> 不建议直接双击打开 `index.html`，某些浏览器环境下会影响脚本加载或资源访问体验。
 
 ---
 
-## 📊 选手列表
+## 部署
 
-| 选手 | 战队 | 角色 | 国籍 |
-|------|------|------|------|
-| ZywOo | Vitality | 主狙 | 🇫🇷 法国 |
-| donk | Spirit | 突破手 | 🇷🇺 俄罗斯 |
-| NiKo | Falcons | 自由人 | 🇧🇦 波黑 |
-| m0NESY | Falcons | 主狙 | 🇷🇺 俄罗斯 |
-| ropz | Vitality | 自由人 | 🇪🇪 爱沙尼亚 |
-| sh1ro | Spirit | 主狙 | 🇷🇺 俄罗斯 |
-| Jame | PARIVISION | 主狙/IGL | 🇰🇿 哈萨克斯坦 |
-| karrigan | FaZe | IGL | 🇩🇰 丹麦 |
-| apEX | Vitality | IGL | 🇫🇷 法国 |
-| YEKINDAR | FURIA | 突破手 | 🇱🇻 拉脱维亚 |
-| arT | Legacy | 突破手/IGL | 🇧🇷 巴西 |
-| b1t | NAVI | 突破手 | 🇺🇦 乌克兰 |
-| torzsi | MOUZ | 主狙 | 🇭🇺 匈牙利 |
-| FalleN | FURIA | 主狙/IGL | 🇧🇷 巴西 |
-| XANTARES | Aurora | 突破手 | 🇹🇷 土耳其 |
-| HooXi | Astralis | IGL | 🇩🇰 丹麦 |
-| Twistzz | FaZe | 突破手 | 🇨🇦 加拿大 |
-| broky | FaZe | 主狙 | 🇱🇻 拉脱维亚 |
-| frozen | FaZe | 自由人 | 🇸🇰 斯洛伐克 |
-| flameZ | ... | 突破手 | 🇮🇱 以色列 |
-| Spinx | ... | 自由人 | 🇮🇱 以色列 |
-| mezii | Vitality | 道具手 | 🇬🇧 英国 |
-| KSCERATO | FURIA | 道具手 | 🇧🇷 巴西 |
-| jabbi | Astralis | 突破手 | 🇩🇰 丹麦 |
-| Aleksib | NAVI | IGL | 🇫🇮 芬兰 |
+当前项目适合直接部署到 **GitHub Pages**。
+
+常见流程：
+
+```bash
+git add .
+git commit -m "update"
+git push
+```
+
+如果仓库已开启 GitHub Pages，推送后会自动更新线上页面。
+
+当前线上地址：`https://ling0413.github.io/cs2-dna-test/`
+
+---
+
+## 当前实现特性
+
+- **静态前端，无依赖构建**
+- **36 道场景题，自动进度与自动前进**
+- **9 维雷达图展示**
+- **25 位职业选手匹配**
+- **显式多维打分，方便手调**
+- **隐藏 `bt` 维度控制结果页气质**
+
+---
+
+## 后续扩展建议
+
+如果你后面继续迭代，这几个方向最容易扩展：
+
+1. **继续加题**
+   - 现有动态归一化逻辑可以直接承接
+
+2. **增加更多整活结果反馈**
+   - 目前 `bt` 只影响结果页样式
+   - 你也可以继续扩展为额外文案、额外标签、额外称号
+
+3. **增加选手或替换画像库**
+   - 只需要维护 `players.js`
+
+4. **细化维度**
+   - 如果要新增可见维度，需要同步修改：
+     - `players.js` 中的 `DIMENSIONS`
+     - `players.js` 中所有选手的 `scores`
+     - `questions.js` 中所有选项的 `scores`
+     - `index.html` 中首页和结果页相关文案
 
 ---
 
 ## License
 
-MIT — 随意使用、修改、分发。
+MIT

@@ -44,20 +44,20 @@ const QUESTIONS = [
     id: 'entry_3', dimLabel: '💥 突破手',
     text: '半起局想找突破口时，你最自然的承担方式是什么？',
     options: [
-      { text: '拿最简单的枪直接顶第一身位，死也要把口子撞出来', scores: { entry: 3, awp: -1, igl: 0, lurker: -2, star: 0, win: 2, nerve: 0, discipline: -2, aggr: 3, bt: 0 } },
-      { text: '我会抢一个前点 timing，先争取白赚一枪', scores: { entry: 2, awp: 0, igl: 0, lurker: 1, star: 1, win: 1, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
-      { text: '半起更要讲配合，先把资源和冲点顺序说清楚', scores: { entry: 0, awp: -1, igl: 2, lurker: -1, star: 0, win: 1, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '我更想摸边线和 timing，不愿意跟大部队正面送', scores: { entry: -1, awp: 0, igl: 0, lurker: 3, star: 0, win: 0, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
+      { text: '拿tec-9直接顶第一身位，死也要把口子撞出来', scores: { entry: 3, awp: -1, igl: 0, lurker: -2, star: 0, win: 2, nerve: 0, discipline: -2, aggr: 3, bt: 0 } },
+      { text: '我会拿沙鹰抢一个前点timing，先争取白赚一枪', scores: { entry: 2, awp: 0, igl: 0, lurker: 1, star: 1, win: 1, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
+      { text: '半起更要讲配合，先把资源和冲点顺序说清楚，必要时刻可以无甲发ak', scores: { entry: 0, awp: -1, igl: 2, lurker: -1, star: 0, win: 1, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '我更想单摸和找timing，不愿意跟大部队正面送', scores: { entry: -1, awp: 0, igl: 0, lurker: 3, star: 0, win: 0, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
     ],
   },
   {
     id: 'entry_4', dimLabel: '💥 突破手',
     text: 'CT 回防 3v3，对面刚下包，队友说“谁先进去找人”？你会？',
     options: [
-      { text: '我先穿烟或跳拉，把包点第一层压力吃掉', scores: { entry: 3, awp: -1, igl: 0, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -2, aggr: 3, bt: 0 } },
-      { text: '可以先手，但必须有人给闪和补枪，不裸送', scores: { entry: 2, awp: 0, igl: 1, lurker: -1, star: 1, win: 1, nerve: 1, discipline: 1, aggr: 1, bt: 0 } },
-      { text: '别急着冲，先把交叉火力和同步进点理清楚', scores: { entry: -1, awp: 0, igl: 2, lurker: 0, star: 0, win: 0, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '我去侧面绕一个 timing，从别的角度把残局切开', scores: { entry: 0, awp: 0, igl: 0, lurker: 3, star: 0, win: 1, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
+      { text: '我先冲了，我管你这那', scores: { entry: 3, awp: -1, igl: 0, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -2, aggr: 3, bt: 0 } },
+      { text: '我可以拉，给我补枪', scores: { entry: 2, awp: 0, igl: 1, lurker: -1, star: 1, win: 1, nerve: 1, discipline: 1, aggr: 1, bt: 0 } },
+      { text: '别急着冲，等我的道具和闪光，我说321开团', scores: { entry: -1, awp: 0, igl: 2, lurker: 0, star: 0, win: 0, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '你们等等我，我绕个后', scores: { entry: 0, awp: 0, igl: 0, lurker: 3, star: 0, win: 1, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
     ],
   },
 
@@ -67,44 +67,44 @@ const QUESTIONS = [
 
   {
     id: 'awp_1', dimLabel: '🎯 狙击手',
-    text: 'CT 开局拿到全队最好的枪时，你最想怎么利用它？',
+    text: 'CT 长枪局你在 Mirage 刷到中路最好身位，队里把 AWP 给了你。第一时间你更想怎么打？',
     options: [
-      { text: '抢一条最长最干净的枪线，让对面默认直接变形', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 2, aggr: 0, bt: 0 } },
-      { text: '主动拿激进枪位，打完一枪立刻换角度继续压', scores: { entry: 1, awp: 2, igl: -1, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
-      { text: '先站稳关键位，等队友信息来了再决定要不要挪动', scores: { entry: 0, awp: 2, igl: 1, lurker: 1, star: 0, win: 1, nerve: 2, discipline: 2, aggr: -1, bt: 0 } },
-      { text: '枪位只是工具，核心还是看整队怎么布置更舒服', scores: { entry: -1, awp: 1, igl: 2, lurker: 0, star: 0, win: 0, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '先抢中路第一枪，拿到过点或匪口信息后立刻回收', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 2, aggr: 0, bt: 0 } },
+      { text: '吃队友一颗反清闪主动去要前点压制，打完就退第二枪位', scores: { entry: 1, awp: 2, igl: -1, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
+      { text: '先稳住窗口和拱门联动，看队友信息再决定要不要二次前压', scores: { entry: 0, awp: 2, igl: 1, lurker: 1, star: 0, win: 1, nerve: 2, discipline: 2, aggr: -1, bt: 0 } },
+      { text: '不执着抢第一时间，优先把中路控制和后续转点补位做好', scores: { entry: -1, awp: 1, igl: 2, lurker: 0, star: 0, win: 0, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
     ],
   },
   {
     id: 'awp_2', dimLabel: '🎯 狙击手',
-    text: 'T 方默认拿到一把大狙，你更像哪种使用方式？',
+    text: 'T 方默认局你拿到唯一一把 AWP，这把枪最像会被你怎么用？',
     options: [
-      { text: '先控长线，把对面最值钱的位置压得不敢动', scores: { entry: -1, awp: 3, igl: 1, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 2, aggr: 0, bt: 0 } },
-      { text: '用它开门，第一枪一响就往前滚节奏', scores: { entry: 2, awp: 2, igl: -1, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
-      { text: '围绕这把枪去调默认，让全队都吃到它的威慑力', scores: { entry: 0, awp: 2, igl: 3, lurker: 0, star: 0, win: 1, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '我更想拿去走冷门线，专门抓 timing 和转点', scores: { entry: 0, awp: 1, igl: 0, lurker: 3, star: 0, win: 1, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
+      { text: '先控最值钱的远点，把 CT 的第一层视野和前压都按住', scores: { entry: -1, awp: 3, igl: 1, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 2, aggr: 0, bt: 0 } },
+      { text: '配一颗闪主动找首杀，只要开门了全队就顺势提速', scores: { entry: 2, awp: 2, igl: -1, lurker: -1, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
+      { text: '围绕这把枪做默认，让队友帮我卡补位和二次道具，把压力持续给足', scores: { entry: 0, awp: 2, igl: 3, lurker: 0, star: 0, win: 1, nerve: 1, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '先不急着亮枪，后半段再带去单边抓 rotation 和回防 timing', scores: { entry: 0, awp: 1, igl: 0, lurker: 3, star: 0, win: 1, nerve: 2, discipline: 1, aggr: 0, bt: 0 } },
     ],
   },
   {
     id: 'awp_3', dimLabel: '🎯 狙击手',
-    text: '残局 1v2，你手里是 AWP，地图上还剩一条大枪线可以利用。你会？',
+    text: '残局 1v2，包已经下好，你手里是 AWP。对面开始双人回防时，你最自然的处理是？',
     options: [
-      { text: '利用枪线一点点切，对面不给机会我绝不乱动', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 3, discipline: 2, aggr: -1, bt: 0 } },
-      { text: '先打一枪再主动换位，让残局始终在我节奏里', scores: { entry: 1, awp: 2, igl: 0, lurker: 1, star: 1, win: 2, nerve: 2, discipline: 0, aggr: 1, bt: 0 } },
-      { text: '先把时间和路线全部算清楚，再决定从哪边切片', scores: { entry: -1, awp: 2, igl: 2, lurker: 0, star: 0, win: 1, nerve: 3, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '不想被 AWP 限制，我宁可找机会换近点武器打', scores: { entry: 1, awp: -1, igl: 0, lurker: 1, star: 1, win: 0, nerve: 1, discipline: 0, aggr: 1, bt: 0 } },
+      { text: '先把最远那条拆包枪线卡死，不给对面轻易逼近换枪', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 3, discipline: 2, aggr: -1, bt: 0 } },
+      { text: '先打一枪再马上换位，让回防的人一直猜我下一枪会在哪', scores: { entry: 1, awp: 2, igl: 0, lurker: 1, star: 1, win: 2, nerve: 2, discipline: 0, aggr: 1, bt: 0 } },
+      { text: '先算时间、烟雾和补枪路线，再决定自己卡主点还是假放包', scores: { entry: -1, awp: 2, igl: 2, lurker: 0, star: 0, win: 1, nerve: 3, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '如果地形太差，我会主动找机会贴近点，不想被 AWP 锁死身法', scores: { entry: 1, awp: -1, igl: 0, lurker: 1, star: 1, win: 0, nerve: 1, discipline: 0, aggr: 1, bt: 0 } },
     ],
   },
   {
     id: 'awp_4', dimLabel: '🎯 狙击手',
-    text: '你守 Mirage A 大，烟边有动静。你最自然的处理方式是？',
+    text: '你在 Mirage A 点拿 AWP 守 ticket，对面一套爆弹已经给出来了。你更像怎么处理？',
     options: [
-      { text: '退一步架烟出，不把自己送进无意义近战', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '主动贴烟找非常规角，打一枪就让对面长记性', scores: { entry: 1, awp: 2, igl: -1, lurker: 0, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
-      { text: '先让队友补信息或道具，再决定要不要继续卡', scores: { entry: 0, awp: 2, igl: 2, lurker: 0, star: 0, win: 1, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
-      { text: '直接换位到更远更安全的线，优先保住主武器价值', scores: { entry: -1, awp: 2, igl: 1, lurker: 1, star: 0, win: 0, nerve: 2, discipline: 2, aggr: -2, bt: 0 } },
+      { text: '退到能看过点和包点的第二枪位，优先保证自己还有下一枪', scores: { entry: -1, awp: 3, igl: 0, lurker: 0, star: 1, win: 1, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '趁烟闪还没完全展开，主动在 ticket 边缘偷一枪再撤', scores: { entry: 1, awp: 2, igl: -1, lurker: 0, star: 1, win: 2, nerve: 1, discipline: -1, aggr: 2, bt: 0 } },
+      { text: '先等队友的火或反清闪，自己负责守最关键的过点和补枪线', scores: { entry: 0, awp: 2, igl: 2, lurker: 0, star: 0, win: 1, nerve: 2, discipline: 3, aggr: -1, bt: 0 } },
+      { text: '如果点位被完全挤掉，我会立刻保枪线和身位，准备 retake 再打', scores: { entry: -1, awp: 2, igl: 1, lurker: 1, star: 0, win: 0, nerve: 2, discipline: 2, aggr: -2, bt: 0 } },
     ],
-  },
+  }
 
   // ══════════════════════════════════════
   //  位置维度3：指挥（4题）
